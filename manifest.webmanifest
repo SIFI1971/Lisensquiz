@@ -1,0 +1,17 @@
+{
+  "id": "./",
+  "name": "Lisensquiz – øving til amatørradioprøven",
+  "short_name": "Lisensquiz",
+  "description": "Øv på hele lisenskurset for amatørradio med quiz, prøvetest og forklaringer.",
+  "lang": "nb",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#fbfbf8",
+  "theme_color": "#fbfbf8",
+  "icons": [
+    {"src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any"},
+    {"src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable"}
+  ]
+}
