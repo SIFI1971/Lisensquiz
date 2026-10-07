@@ -1,6 +1,6 @@
 // Lagrer appen på telefonen så den virker uten nett.
 // Hvis du endrer noen av filene senere: øk versjonsnummeret under, så henter telefonen den nye versjonen.
-const CACHE = "lisensquiz-v1";
+const CACHE = "lisensquiz-v2";
 const FILES = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png"];
 
 self.addEventListener("install", (event) => {

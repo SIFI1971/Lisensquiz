@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Lisensquiz – øving til amatørradioprøven</title>
-<meta name="description" content="Øv på hele lisenskurset for amatørradio: over 300 spørsmål fra alle kapitlene, med forklaringer og prøvetest.">
+<meta name="description" content="Øv på hele lisenskurset for amatørradio: nesten 350 spørsmål fra alle kapitlene, med forklaringer og prøvetest.">
 <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fbfbf8">
 <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#1b1b19">
 <link rel="manifest" href="manifest.webmanifest">
@@ -227,6 +227,9 @@ body.has-dock main{padding-bottom:calc(104px + env(safe-area-inset-bottom,0px))}
 .chap-bar .k{font-weight:400;opacity:.8;white-space:nowrap}
 .opt .txt{display:inline}
 .rows .opt{grid-template-columns:22px 1fr 20px}
+.calc.prio{border-color:var(--red);color:var(--ink)}
+.calc .dot{margin-right:4px;vertical-align:0}
+.toggle button{padding-left:4px;padding-right:4px}
 .calc{display:inline-block;margin-left:8px;padding:1px 7px;border:1px solid var(--rule-strong);border-radius:3px;font-size:13px;font-weight:700;color:var(--ink-2);vertical-align:2px;letter-spacing:.02em}
 .explain{margin:0;padding:10px 0 0;border-top:2px solid var(--ink);font-size:16px}
 .explain b{margin-right:.3em}
@@ -327,23 +330,23 @@ const CH = Object.fromEntries(CHAPTERS.map((c) => [c.k, c]));
 // Spørsmålene. Første svaralternativ er alltid riktig – appen stokker dem.
 const QS = [];
 function hash(s){ let h = 5381; for(let i = 0; i < s.length; i++) h = ((h << 5) + h + s.charCodeAt(i)) | 0; return (h >>> 0).toString(36); }
-function Q(k, q, o, f, r){ QS.push({id: k + "-" + hash(q), k, q, o, f, r: !!r}); }
+function Q(k, q, o, f, r, p){ QS.push({id: k + "-" + hash(q), k, q, o, f, r: !!r, p: !!p}); }
 // Første svaralternativ er alltid riktig – appen stokker rekkefølgen.
 // r:1 = regneoppgave
-Q("el","Hva er effekten når en pære på 12 V trekker 2 A?",["24 W","6 W","14 W","0,17 W"],"Effektloven: P = U × I = 12 V × 2 A = 24 W.",1);
-Q("el","En motstand på 470 Ω har 9,4 V over seg. Hvor stor strøm går gjennom den?",["20 mA","2 mA","50 mA","4,4 A"],"Ohms lov: I = U / R = 9,4 / 470 = 0,02 A = 20 mA.",1);
-Q("el","Hva er motstanden i en billyspære på 60 W og 12 V?",["2,4 Ω","5 Ω","720 Ω","0,2 Ω"],"R = U² / P = 144 / 60 = 2,4 Ω.",1);
+Q("el","Hva er effekten når en pære på 12 V trekker 2 A?",["24 W","6 W","14 W","0,17 W"],"Effektloven: P = U × I = 12 V × 2 A = 24 W.",1,1);
+Q("el","En motstand på 470 Ω har 9,4 V over seg. Hvor stor strøm går gjennom den?",["20 mA","2 mA","50 mA","4,4 A"],"Ohms lov: I = U / R = 9,4 / 470 = 0,02 A = 20 mA.",1,1);
+Q("el","Hva er motstanden i en billyspære på 60 W og 12 V?",["2,4 Ω","5 Ω","720 Ω","0,2 Ω"],"R = U² / P = 144 / 60 = 2,4 Ω.",1,1);
 Q("el","To motstander på 100 Ω og 220 Ω kobles i serie. Hva blir total motstand?",["320 Ω","69 Ω","120 Ω","22 kΩ"],"I serie legges motstandene sammen: 100 + 220 = 320 Ω.",1);
 Q("el","To like motstander på 1 kΩ kobles i parallell. Hva blir total motstand?",["500 Ω","2 kΩ","1 kΩ","250 Ω"],"n like motstander i parallell: R/n = 1000/2 = 500 Ω.",1);
-Q("el","Hva er total motstand av 20 kΩ, 10 kΩ og 5 kΩ i parallell?",["Ca. 2,9 kΩ","35 kΩ","Ca. 11,7 kΩ","5 kΩ"],"1/R = 1/20 + 1/10 + 1/5 = 7/20, så R = 20/7 ≈ 2,9 kΩ. Totalen er alltid mindre enn den minste motstanden.",1);
-Q("el","En spenningsdeler har R1 = 3 kΩ og R2 = 1 kΩ og får 12 V inn. Hva er spenningen over R2?",["3 V","4 V","9 V","12 V"],"Uut = Uinn × R2 / (R1 + R2) = 12 × 1/4 = 3 V.",1);
+Q("el","Hva er total motstand av 20 kΩ, 10 kΩ og 5 kΩ i parallell?",["Ca. 2,9 kΩ","35 kΩ","Ca. 11,7 kΩ","5 kΩ"],"1/R = 1/20 + 1/10 + 1/5 = 7/20, så R = 20/7 ≈ 2,9 kΩ. Totalen er alltid mindre enn den minste motstanden.",1,1);
+Q("el","En spenningsdeler har R1 = 3 kΩ og R2 = 1 kΩ og får 12 V inn. Hva er spenningen over R2?",["3 V","4 V","9 V","12 V"],"Uut = Uinn × R2 / (R1 + R2) = 12 × 1/4 = 3 V.",1,1);
 Q("el","Hva er enheten for elektrisk ladning?",["Coulomb (C)","Joule (J)","Farad (F)","Henry (H)"],"Én coulomb er ladningen som tilsvarer 1 ampere i 1 sekund.");
 Q("el","Hva er 1 joule?",["Ett wattsekund","Én ampere i ett sekund","Én volt per ampere","Én watt per time"],"Energi = effekt × tid. 1 J = 1 Ws.");
 Q("el","Når overføres maksimal effekt fra en kilde til en last?",["Når lastmotstanden er lik kildens indre motstand","Når lastmotstanden er null","Når lastmotstanden er uendelig stor","Når lastmotstanden er halvparten av indre motstand"],"Maksimal effektoverføring skjer når kildemotstand og lastmotstand er like store.");
 Q("el","Et batteri har EMK 12 V og indre motstand 0,5 Ω. Hva blir polspenningen når det trekkes 4 A?",["10 V","12 V","2 V","14 V"],"Upol = EMK − I × r = 12 − 4 × 0,5 = 10 V.",1);
 Q("el","Hva skjer med kapasitansen hvis avstanden mellom kondensatorplatene dobles?",["Den halveres","Den dobles","Den firedobles","Den er uendret"],"C = K × A / d. Kapasitansen er omvendt proporsjonal med avstanden d.");
 Q("el","Hva er total kapasitans av 100 pF og 220 pF i parallell?",["320 pF","69 pF","120 pF","22 nF"],"Kondensatorer i parallell legges sammen (som om plateflaten økes).",1);
-Q("el","To kondensatorer på 10 nF kobles i serie. Hva blir total kapasitans?",["5 nF","20 nF","10 nF","100 nF"],"I serie: C1×C2/(C1+C2) = 100/20 = 5 nF. Formelen er som for motstander i parallell.",1);
+Q("el","To kondensatorer på 10 nF kobles i serie. Hva blir total kapasitans?",["5 nF","20 nF","10 nF","100 nF"],"I serie: C1×C2/(C1+C2) = 100/20 = 5 nF. Formelen er som for motstander i parallell.",1,1);
 Q("el","Hva kjennetegner en elektrolyttkondensator?",["Den er polarisert og tåler ikke feil polaritet","Den har luft som dielektrikum","Den egner seg best på høye radiofrekvenser","Den har svært liten kapasitans"],"Elektrolyttkondensatorer har stor kapasitans, men må kobles riktig vei og ikke utsettes for overspenning.");
 Q("el","Hvilken kondensatortype egner seg godt i avstemte kretser på radiofrekvenser?",["Keramisk med lav dielektrisk konstant eller glimmer","Elektrolytt","Høy-k keramisk","Papirkondensator"],"Keramiske kondensatorer med lav k og glimmerkondensatorer har lave tap og er stabile på RF.");
 Q("el","Hva er tidskonstanten for en RC-krets med 100 kΩ og 10 µF?",["1 sekund","0,1 sekund","10 sekunder","1 millisekund"],"t = R × C = 100 000 × 0,000 01 = 1 s. Etter ca. 5t er kondensatoren nesten fulladet.",1);
@@ -353,21 +356,21 @@ Q("el","Hvordan øker du induktansen til en spole?",["Flere viklinger eller en f
 Q("el","To spoler på 10 µH og 15 µH kobles i serie (uten kobling mellom dem). Hva blir total induktans?",["25 µH","6 µH","150 µH","5 µH"],"Spoler i serie legges sammen, akkurat som motstander.",1);
 Q("el","Hva er tidskonstanten i en LR-krets?",["t = L / R","t = L × R","t = R / L","t = 1/(2πLR)"],"Tidskonstanten for spole og motstand er L/R. Etter ca. 5t har strømmen nådd sluttverdien.");
 Q("el","En sinusspenning har perioden T = 1 ms. Hva er frekvensen?",["1 kHz","1 Hz","100 Hz","1 MHz"],"f = 1/T = 1/0,001 s = 1000 Hz.",1);
-Q("el","En sinusspenning har spissverdi 14,1 V. Hva er effektivverdien (RMS)?",["10 V","14,1 V","20 V","7 V"],"URMS = Uspiss / √2 = 0,707 × 14,1 ≈ 10 V.",1);
+Q("el","En sinusspenning har spissverdi 14,1 V. Hva er effektivverdien (RMS)?",["10 V","14,1 V","20 V","7 V"],"URMS = Uspiss / √2 = 0,707 × 14,1 ≈ 10 V.",1,1);
 Q("el","Hva er den andre harmoniske av 7,1 MHz?",["14,2 MHz","21,3 MHz","3,55 MHz","7,1 MHz"],"Andre harmoniske = 2 × grunnfrekvensen.",1);
 Q("el","Hva er faseforholdet mellom strøm og spenning i en kondensator?",["Spenningen ligger 90° etter strømmen","Spenningen ligger 90° foran strømmen","De er i fase","De er 180° ute av fase"],"I en kondensator ligger strømmen foran. I en spole er det motsatt: spenningen ligger foran.");
 Q("el","Hva er faseforholdet mellom strøm og spenning i en ideell spole?",["Spenningen ligger 90° foran strømmen","Spenningen ligger 90° etter strømmen","De er i fase","De er 45° forskjøvet"],"I en spole ligger spenningen 90° foran strømmen.");
-Q("el","Hva skjer med reaktansen til en kondensator når frekvensen øker?",["Den minker","Den øker","Den er uendret","Den blir null ved 50 Hz"],"XC = 1/(2πfC). Høyere frekvens gir lavere reaktans.");
+Q("el","Hva skjer med reaktansen til en kondensator når frekvensen øker?",["Den minker","Den øker","Den er uendret","Den blir null ved 50 Hz"],"XC = 1/(2πfC). Høyere frekvens gir lavere reaktans.",0,1);
 Q("el","Hva skjer med reaktansen til en spole når frekvensen dobles?",["Den dobles","Den halveres","Den firedobles","Den er uendret"],"XL = 2πfL er proporsjonal med frekvensen.");
 Q("el","Hva er reaktansen til en spole på 10 µH ved 7 MHz?",["Ca. 440 Ω","Ca. 70 Ω","Ca. 2,3 Ω","Ca. 4,4 kΩ"],"XL = 2π × 7·10⁶ × 10·10⁻⁶ = 2π × 70 ≈ 440 Ω.",1);
-Q("el","En krets har R = 30 Ω i serie med XC = 40 Ω. Hva er impedansen?",["50 Ω","70 Ω","10 Ω","1200 Ω"],"Z = √(R² + X²) = √(900 + 1600) = √2500 = 50 Ω.",1);
-Q("el","Hvordan oppfører en serieresonanskrets seg ved resonans?",["Lav impedans","Høy impedans","Uendelig impedans","Ren kapasitiv"],"Ved resonans opphever XL og XC hverandre. Bare tapsmotstanden blir igjen, så impedansen er lav («sugekrets»).");
-Q("el","Hvordan oppfører en parallellresonanskrets seg ved resonans?",["Høy impedans","Lav impedans","Null impedans","Ren induktiv"],"Strømmene i L og C opphever hverandre, så kretsen har høy impedans (sperrekrets). Den kalles dynamisk resistans.");
-Q("el","Hva skjer med resonansfrekvensen når kapasitansen i en LC-krets firedobles?",["Den halveres","Den dobles","Den firedobles","Den blir en fjerdedel"],"f = 1/(2π√(LC)). Fire ganger C gir √4 = 2, altså halv frekvens.");
-Q("el","En avstemt krets har resonans på 10 MHz og båndbredde 100 kHz. Hva er Q-faktoren?",["100","10","1000","0,01"],"Q = f0 / båndbredde = 10 000 kHz / 100 kHz = 100.",1);
-Q("el","Hva skjer med båndbredden når Q-faktoren øker?",["Den blir smalere","Den blir bredere","Den er uendret","Den blir null"],"Høy Q gir skarpere kurve og smalere båndbredde. En dempemotstand senker Q og øker båndbredden.");
-Q("el","En transformator har 10 ganger så mange viklinger på primærsiden som på sekundærsiden. Hva blir sekundærspenningen med 230 V inn?",["23 V","2300 V","230 V","2,3 V"],"Spenningsforholdet er lik viklingsforholdet: 230 / 10 = 23 V.",1);
-Q("el","Viklingsforholdet i en transformator er 2:1. Hva blir impedansforholdet?",["4:1","2:1","1:1","8:1"],"Impedansen transformeres med kvadratet av viklingsforholdet: 2² = 4.",1);
+Q("el","En krets har R = 30 Ω i serie med XC = 40 Ω. Hva er impedansen?",["50 Ω","70 Ω","10 Ω","1200 Ω"],"Z = √(R² + X²) = √(900 + 1600) = √2500 = 50 Ω.",1,1);
+Q("el","Hvordan oppfører en serieresonanskrets seg ved resonans?",["Lav impedans","Høy impedans","Uendelig impedans","Ren kapasitiv"],"Ved resonans opphever XL og XC hverandre. Bare tapsmotstanden blir igjen, så impedansen er lav («sugekrets»).",0,1);
+Q("el","Hvordan oppfører en parallellresonanskrets seg ved resonans?",["Høy impedans","Lav impedans","Null impedans","Ren induktiv"],"Strømmene i L og C opphever hverandre, så kretsen har høy impedans (sperrekrets). Den kalles dynamisk resistans.",0,1);
+Q("el","Hva skjer med resonansfrekvensen når kapasitansen i en LC-krets firedobles?",["Den halveres","Den dobles","Den firedobles","Den blir en fjerdedel"],"f = 1/(2π√(LC)). Fire ganger C gir √4 = 2, altså halv frekvens.",0,1);
+Q("el","En avstemt krets har resonans på 10 MHz og båndbredde 100 kHz. Hva er Q-faktoren?",["100","10","1000","0,01"],"Q = f0 / båndbredde = 10 000 kHz / 100 kHz = 100.",1,1);
+Q("el","Hva skjer med båndbredden når Q-faktoren øker?",["Den blir smalere","Den blir bredere","Den er uendret","Den blir null"],"Høy Q gir skarpere kurve og smalere båndbredde. En dempemotstand senker Q og øker båndbredden.",0,1);
+Q("el","En transformator har 10 ganger så mange viklinger på primærsiden som på sekundærsiden. Hva blir sekundærspenningen med 230 V inn?",["23 V","2300 V","230 V","2,3 V"],"Spenningsforholdet er lik viklingsforholdet: 230 / 10 = 23 V.",1,1);
+Q("el","Viklingsforholdet i en transformator er 2:1. Hva blir impedansforholdet?",["4:1","2:1","1:1","8:1"],"Impedansen transformeres med kvadratet av viklingsforholdet: 2² = 4.",1,1);
 Q("el","Hvorfor er jernkjernen i en nett-transformator laget av tynne, isolerte plater?",["For å redusere virvelstrømmer","For å øke virvelstrømmene","For å spare vekt","For å øke kapasitansen"],"Et massivt jernstykke ville virke som en kortsluttet vikling og bli varmt. Lamineringen hindrer virvelstrømmer.");
 Q("el","Hvilken effekt utnyttes i et kvartskrystall?",["Den piezoelektriske effekten","Halleffekten","Fotoelektrisk effekt","Peltiereffekten"],"Mekanisk stress gir spenning, og spenning gir formendring. Krystallet får en svært skarp mekanisk og elektrisk resonans.");
 Q("el","Hva er den viktigste fordelen med et krystall framfor en LC-krets?",["Svært høy Q-faktor og stabil frekvens","Kan avstemmes over et stort område","Tåler høy effekt","Er billigere"],"Krystaller kan ha Q på opptil ca. 50 000, mye mer enn en vanlig LC-krets.");
@@ -382,20 +385,20 @@ Q("el","Hvor mange pF er 0,01 µF?",["10 000 pF","1000 pF","100 pF","100 000 pF"
 Q("hl","Hvilket materiale brukes i de fleste halvledere i dag?",["Silisium","Germanium","Kobber","Selen"],"Tidlige halvledere var av germanium, i dag er de fleste av silisium.");
 Q("hl","Hva får man når silisium dopes med et stoff som har fem ytre elektroner (f.eks. fosfor)?",["N-type materiale","P-type materiale","En isolator","En leder uten frie elektroner"],"Det femte elektronet er fritt og kan lede strøm. N står for negative ladningsbærere.");
 Q("hl","Hva er de viktigste ladningsbærerne i P-type materiale?",["Hull","Frie elektroner","Protoner","Ioner"],"Doping med tre ytre elektroner (f.eks. bor) gir ledige plasser, hull, som beveger seg.");
-Q("hl","Omtrent hvor stor spenning trengs før en silisiumdiode leder?",["0,6 V","0,2 V","1,5 V","5 V"],"Potensialbarrieren er ca. 0,6 V for silisium og ca. 0,3–0,4 V for germanium.");
+Q("hl","Omtrent hvor stor spenning trengs før en silisiumdiode leder?",["0,6 V","0,2 V","1,5 V","5 V"],"Potensialbarrieren er ca. 0,6 V for silisium og ca. 0,3–0,4 V for germanium.",0,1);
 Q("hl","Når leder en diode strøm?",["Når anoden er positiv i forhold til katoden","Når katoden er positiv i forhold til anoden","Bare ved vekselstrøm","Bare når den er varm"],"Positivt forspent (lederetningen): P-siden (anode) positiv, N-siden (katode) negativ.");
-Q("hl","Hva er fordelen med en fullbølgelikeretter framfor en halvbølgelikeretter?",["Begge halvperiodene brukes, så glattingen blir enklere","Den trenger bare én diode","Den gir høyere spissspenning","Den trenger ikke glattekondensator"],"Kondensatoren lades to ganger per periode, så rippelen blir mindre.");
+Q("hl","Hva er fordelen med en fullbølgelikeretter framfor en halvbølgelikeretter?",["Begge halvperiodene brukes, så glattingen blir enklere","Den trenger bare én diode","Den gir høyere spissspenning","Den trenger ikke glattekondensator"],"Kondensatoren lades to ganger per periode, så rippelen blir mindre.",0,1);
 Q("hl","Hvor mange dioder har en brolikeretter?",["Fire","To","Én","Tre"],"Brolikeretteren bruker fire dioder og trenger ikke sentertappet transformator.");
-Q("hl","Hva brukes en zenerdiode til?",["Spenningsreferanse eller enkel spenningsstabilisering","Likeretting av høy effekt","Variabel kapasitans i en oscillator","Lysindikator"],"Zenerdioden holder en nesten konstant spenning når den leder i sperreretningen.");
-Q("hl","Hva brukes en varicapdiode (kapasitansdiode) til?",["Spenningsstyrt avstemming, f.eks. i en VCO","Likeretting","Spenningsreferanse","Effektforsterkning"],"Kapasitansen varierer med sperrespenningen fordi tømmingssjiktet blir bredere eller smalere.");
+Q("hl","Hva brukes en zenerdiode til?",["Spenningsreferanse eller enkel spenningsstabilisering","Likeretting av høy effekt","Variabel kapasitans i en oscillator","Lysindikator"],"Zenerdioden holder en nesten konstant spenning når den leder i sperreretningen.",0,1);
+Q("hl","Hva brukes en varicapdiode (kapasitansdiode) til?",["Spenningsstyrt avstemming, f.eks. i en VCO","Likeretting","Spenningsreferanse","Effektforsterkning"],"Kapasitansen varierer med sperrespenningen fordi tømmingssjiktet blir bredere eller smalere.",0,1);
 Q("hl","Hva skjer med kapasitansen i en varicapdiode når sperrespenningen økes?",["Den minker","Den øker","Den er uendret","Dioden begynner å lede"],"Mer sperrespenning gir bredere tømmingssjikt, altså større avstand mellom «platene» og lavere kapasitans.");
 Q("hl","En transistor har strømforsterkning β = 100 og basisstrøm 50 µA. Hva er kollektorstrømmen?",["5 mA","0,5 mA","50 mA","2 mA"],"IC = β × IB = 100 × 50 µA = 5000 µA = 5 mA.",1);
 Q("hl","Hva heter de tre tilkoblingene på en bipolar transistor?",["Emitter, basis og kollektor","Gate, source og drain","Anode, katode og gitter","Inngang, utgang og jord"],"Gate, source og drain er FET. Anode, katode og gitter er radiorør.");
-Q("hl","Hvilken kobling snur signalet 180° (fasevender)?",["Felles emitter","Felles kollektor (emitterfølger)","Felles basis","Ingen av dem"],"Felles emitter har middels inngangs- og utgangsimpedans og fasevender signalet.");
-Q("hl","Hva kjennetegner en emitterfølger (felles kollektor)?",["Høy inngangsimpedans, lav utgangsimpedans, ingen spenningsforsterkning","Lav inngangsimpedans, høy utgangsimpedans","Stor spenningsforsterkning og fasevending","Ingen strømforsterkning"],"Emitterfølgeren brukes som buffer, f.eks. etter en oscillator.");
-Q("hl","Hva kjennetegner en kobling med felles basis?",["Lav inngangsimpedans, høy utgangsimpedans, ingen strømforsterkning","Høy inngangsimpedans, lav utgangsimpedans","Fasevender signalet","Bare strømforsterkning"],"Felles basis gir bare spenningsforsterkning og fungerer på høyest frekvens.");
-Q("hl","Hvilken forsterkerklasse har kollektorstrøm hele perioden og minst forvrengning?",["Klasse A","Klasse B","Klasse C","Klasse AB"],"Klasse A er lineær, men har dårlig virkningsgrad fordi det alltid går hvilestrøm.");
-Q("hl","Hvilken forsterkerklasse egner seg bare for FM og CW, ikke SSB?",["Klasse C","Klasse A","Klasse AB","Klasse B push-pull"],"Klasse C leder bare en del av perioden og gir mange harmoniske. Den er ikke lineær, men har høy virkningsgrad.");
+Q("hl","Hvilken kobling snur signalet 180° (fasevender)?",["Felles emitter","Felles kollektor (emitterfølger)","Felles basis","Ingen av dem"],"Felles emitter har middels inngangs- og utgangsimpedans og fasevender signalet.",0,1);
+Q("hl","Hva kjennetegner en emitterfølger (felles kollektor)?",["Høy inngangsimpedans, lav utgangsimpedans, ingen spenningsforsterkning","Lav inngangsimpedans, høy utgangsimpedans","Stor spenningsforsterkning og fasevending","Ingen strømforsterkning"],"Emitterfølgeren brukes som buffer, f.eks. etter en oscillator.",0,1);
+Q("hl","Hva kjennetegner en kobling med felles basis?",["Lav inngangsimpedans, høy utgangsimpedans, ingen strømforsterkning","Høy inngangsimpedans, lav utgangsimpedans","Fasevender signalet","Bare strømforsterkning"],"Felles basis gir bare spenningsforsterkning og fungerer på høyest frekvens.",0,1);
+Q("hl","Hvilken forsterkerklasse har kollektorstrøm hele perioden og minst forvrengning?",["Klasse A","Klasse B","Klasse C","Klasse AB"],"Klasse A er lineær, men har dårlig virkningsgrad fordi det alltid går hvilestrøm.",0,1);
+Q("hl","Hvilken forsterkerklasse egner seg bare for FM og CW, ikke SSB?",["Klasse C","Klasse A","Klasse AB","Klasse B push-pull"],"Klasse C leder bare en del av perioden og gir mange harmoniske. Den er ikke lineær, men har høy virkningsgrad.",0,1);
 Q("hl","Hvorfor bruker en push-pull-forsterker to transistorer?",["Hver transistor forsterker sin halvperiode, så hvilestrømmen kan være lav","For å doble frekvensen","For å få høyere inngangsimpedans","For å fasevende signalet to ganger"],"Med nesten klasse B-forspenning blir varmeutviklingen og strømforbruket lavt.");
 Q("hl","Hva heter tilkoblingene på en felteffekttransistor (FET)?",["Gate, source og drain","Basis, emitter og kollektor","Gitter, anode og katode","Port 1, port 2 og jord"],"På norsk kalles de også port, kilde og utløp.");
 Q("hl","Hva er en viktig egenskap ved en FET sammenliknet med en bipolar transistor?",["Svært høy inngangsimpedans","Svært lav inngangsimpedans","Den trenger basisstrøm","Den tåler statisk elektrisitet bedre"],"Gaten er negativt forspent eller isolert, så det går nesten ingen strøm inn.");
@@ -406,65 +409,65 @@ Q("hl","Hvorfor kan en integrert spenningsregulator trenge små kondensatorer te
 Q("hl","I et radiorør (triode) – hvilken elektrode styrer anodestrømmen?",["Gitteret","Katoden","Glødetråden","Anoden"],"Gitteret ligger nær katoden og har litt negativ spenning. Det tilsvarer gaten i en FET.");
 Q("hl","Hva er en fordel med rør i en effektforsterker?",["Tåler høy spenning og feiltilpasning godt","Trenger lav spenning","Er mekanisk robuste","Slites ikke"],"Ulempene er høye spenninger, ømtålighet, slitasje og støyende vifter.");
 Q("tx","Hvorfor brukes SSB framfor AM for tale på HF?",["Halv båndbredde og ingen effekt sløses på bærebølgen","Bedre lydkvalitet for musikk","Enklere mottaker","SSB kan ikke forstyrre andre"],"AM sender en konstant bærebølge og to like sidebånd. SSB sender bare ett sidebånd.");
-Q("tx","Hvor stor båndbredde trenger et AM-signal som moduleres med tale opp til 3 kHz?",["6 kHz","3 kHz","1,5 kHz","12 kHz"],"AM har to sidebånd, så båndbredden er 2 × høyeste modulasjonsfrekvens.",1);
-Q("tx","Hvor stor båndbredde har et SSB-signal for tale med frekvenser opp til 2,7 kHz?",["Ca. 2,7 kHz","Ca. 5,4 kHz","Ca. 12 kHz","Ca. 500 Hz"],"SSB sender bare ett sidebånd, så båndbredden er omtrent lik høyeste lydfrekvens.",1);
+Q("tx","Hvor stor båndbredde trenger et AM-signal som moduleres med tale opp til 3 kHz?",["6 kHz","3 kHz","1,5 kHz","12 kHz"],"AM har to sidebånd, så båndbredden er 2 × høyeste modulasjonsfrekvens.",1,1);
+Q("tx","Hvor stor båndbredde har et SSB-signal for tale med frekvenser opp til 2,7 kHz?",["Ca. 2,7 kHz","Ca. 5,4 kHz","Ca. 12 kHz","Ca. 500 Hz"],"SSB sender bare ett sidebånd, så båndbredden er omtrent lik høyeste lydfrekvens.",1,1);
 Q("tx","Hva skjer med et SSB-signal når du ikke snakker i mikrofonen?",["Det sendes ingenting (ingen bærebølge)","Bærebølgen sendes med full effekt","Begge sidebåndene sendes","Senderen sender en fast tone"],"Bærebølgen er undertrykt (J3E), så utsendt effekt følger talen.");
 Q("tx","Hva kalles det når en AM-sender moduleres mer enn 100 %?",["Overmodulering","Overdeviasjon","Nøkkelklikk","Parasittsvingning"],"Overmodulering gir kraftig forvrengning og brede signaler som forstyrrer nærliggende frekvenser.");
 Q("tx","Hva endres i et FM-signal når det moduleres?",["Frekvensen","Amplituden","Antall sidebånd blir alltid to","Ingenting – bare fasen ved likestrøm"],"Ved FM varierer frekvensen i takt med lydsignalet, mens amplituden er konstant.");
 Q("tx","Hva er modulasjonsindeksen for FM?",["Frekvensavvik delt på høyeste modulasjonsfrekvens","Høyeste modulasjonsfrekvens delt på frekvensavvik","Bærebølgefrekvens delt på avvik","Amplitude delt på frekvens"],"Eksempel: 2,5 kHz avvik og 3 kHz tone gir indeks ca. 0,8.");
-Q("tx","Et FM-signal har 5 kHz avvik og høyeste modulasjonsfrekvens 3 kHz. Hva er båndbredden etter Carsons regel?",["16 kHz","8 kHz","10 kHz","6 kHz"],"Carsons regel: B = 2 × (avvik + høyeste modulasjonsfrekvens) = 2 × (5 + 3) = 16 kHz.",1);
+Q("tx","Et FM-signal har 5 kHz avvik og høyeste modulasjonsfrekvens 3 kHz. Hva er båndbredden etter Carsons regel?",["16 kHz","8 kHz","10 kHz","6 kHz"],"Carsons regel: B = 2 × (avvik + høyeste modulasjonsfrekvens) = 2 × (5 + 3) = 16 kHz.",1,1);
 Q("tx","Hvorfor kan en FM-sender bruke et ikke-lineært sluttrinn (klasse C)?",["Amplituden er konstant, så forvrengning av amplitude betyr lite","FM har ingen harmoniske","Klasse C gir minst støy","FM-signalet har ingen bærebølge"],"SSB og AM krever lineære forsterkere, FM og CW gjør det ikke.");
-Q("tx","Hva gjør en balansert modulator i en SSB-sender?",["Lager to sidebånd og undertrykker bærebølgen","Fjerner ett sidebånd","Forsterker bærebølgen","Demodulerer signalet"],"Etterpå fjerner et krystallfilter det uønskede sidebåndet.");
-Q("tx","Hvilket filter fjerner det uønskede sidebåndet i en filtertype SSB-sender?",["Krystallfilter (sidebåndsfilter)","Lavpassfilter etter PA","Høypassfilter på mikrofonen","Pi-filter"],"Krystallfilteret har bratte flanker og en båndbredde på ca. 2,4–2,7 kHz.");
+Q("tx","Hva gjør en balansert modulator i en SSB-sender?",["Lager to sidebånd og undertrykker bærebølgen","Fjerner ett sidebånd","Forsterker bærebølgen","Demodulerer signalet"],"Etterpå fjerner et krystallfilter det uønskede sidebåndet.",0,1);
+Q("tx","Hvilket filter fjerner det uønskede sidebåndet i en filtertype SSB-sender?",["Krystallfilter (sidebåndsfilter)","Lavpassfilter etter PA","Høypassfilter på mikrofonen","Pi-filter"],"Krystallfilteret har bratte flanker og en båndbredde på ca. 2,4–2,7 kHz.",0,1);
 Q("tx","Hva er en VFO?",["En oscillator med variabel frekvens","En fast krystalloscillator","Et filter for sidebånd","En effektmåler"],"VFO = Variable Frequency Oscillator. Den må være stabil, ellers driver frekvensen.");
 Q("tx","Hva kjennetegner en PLL-frekvenssyntese?",["En VCO låses til en stabil referanse via fasekomparator og deler","En krystalloscillator uten tilbakekobling","En oscillator som bare bruker en LC-krets","En digital-til-analog-omformer som lager sinus direkte"],"PLL = faselåst sløyfe. Fasekomparatoren styrer en varicap i VCO-en slik at frekvensen holdes låst.");
 Q("tx","Hva står DDS for?",["Direkte digital syntese","Dobbel diode-synthesizer","Digital demodulasjon av sidebånd","Direkte dobbel superheterodyn"],"DDS lager en sinus fra en tabell i en D/A-omformer, fulgt av lavpassfilter.");
-Q("tx","Hva produserer en blander (mikser) når den får inn frekvensene f1 og f2?",["Summen og differansen (f1 + f2 og f1 − f2)","Bare f1 × f2","Bare gjennomsnittet","Bare harmoniske av f1"],"I tillegg kan det komme ut rester av f1, f2 og andre blandingsprodukter, så det trengs filter.");
-Q("tx","En sender bruker 9 MHz mellomfrekvens og en VFO på 5 MHz. Hvilke to frekvenser får du ut av blanderen?",["14 MHz og 4 MHz","9 MHz og 5 MHz","45 MHz og 1,8 MHz","18 MHz og 10 MHz"],"Sum 9 + 5 = 14 MHz, differanse 9 − 5 = 4 MHz.",1);
+Q("tx","Hva produserer en blander (mikser) når den får inn frekvensene f1 og f2?",["Summen og differansen (f1 + f2 og f1 − f2)","Bare f1 × f2","Bare gjennomsnittet","Bare harmoniske av f1"],"I tillegg kan det komme ut rester av f1, f2 og andre blandingsprodukter, så det trengs filter.",0,1);
+Q("tx","En sender bruker 9 MHz mellomfrekvens og en VFO på 5 MHz. Hvilke to frekvenser får du ut av blanderen?",["14 MHz og 4 MHz","9 MHz og 5 MHz","45 MHz og 1,8 MHz","18 MHz og 10 MHz"],"Sum 9 + 5 = 14 MHz, differanse 9 − 5 = 4 MHz.",1,1);
 Q("tx","Hvorfor brukes frekvensmultiplikator i noen VHF FM-sendere?",["For å nå høy frekvens fra en lavere og stabil oscillator","For å redusere avviket","For å fjerne harmoniske","For å lage SSB"],"Merk at avviket multipliseres like mye som frekvensen.");
 Q("tx","En oscillator på 12 MHz følges av en tripler og så en dobler. Hva blir utgangsfrekvensen?",["72 MHz","36 MHz","24 MHz","144 MHz"],"12 × 3 × 2 = 72 MHz.",1);
-Q("tx","Hva er hensikten med lavpassfilteret etter sluttrinnet (PA) i en HF-sender?",["Dempe harmoniske","Dempe likestrøm","Øke effekten","Dempe sidebånd"],"Sluttrinnet lager harmoniske som må filtreres bort før antennen.");
+Q("tx","Hva er hensikten med lavpassfilteret etter sluttrinnet (PA) i en HF-sender?",["Dempe harmoniske","Dempe likestrøm","Øke effekten","Dempe sidebånd"],"Sluttrinnet lager harmoniske som må filtreres bort før antennen.",0,1);
 Q("tx","Hva er nøkkelklikk på CW?",["Brede forstyrrelser fordi signalet slås av og på for brått","Klikkelyd fra en dårlig nøkkel i rommet","Frekvensendring når nøkkelen trykkes","Svak tone i mottakeren"],"For bratte flanker gir sidebånd langt ut. Løsningen er å forme (myke opp) stige- og falltidene.");
-Q("tx","Hvilken modulasjonsform har forkortelsen J3E?",["SSB-telefoni med undertrykket bærebølge","AM-telefoni","FM-telefoni","Morsetelegrafi"],"J = enkelt sidebånd, undertrykket bærebølge. 3 = én analog kanal. E = telefoni.");
+Q("tx","Hvilken modulasjonsform har forkortelsen J3E?",["SSB-telefoni med undertrykket bærebølge","AM-telefoni","FM-telefoni","Morsetelegrafi"],"J = enkelt sidebånd, undertrykket bærebølge. 3 = én analog kanal. E = telefoni.",0,1);
 Q("tx","Hva betyr betegnelsen F3E?",["FM-telefoni","AM-telefoni","SSB-telefoni","FM-data"],"F = frekvensmodulasjon, 3 = én analog kanal, E = telefoni.");
 Q("tx","Hva betyr betegnelsen A1A?",["Telegrafi (morse) ved av/på-nøkling av bærebølgen","AM-telefoni","Fjernsyn","Data med FSK"],"A = dobbelt sidebånd/amplitude, 1 = digital uten hjelpebærebølge, A = telegrafi for hørbart mottak.");
-Q("tx","Hva er PEP?",["Spisseffekt i omhyllingskurven (Peak Envelope Power)","Gjennomsnittlig bærebølgeeffekt","Effekt målt ved antennens fødepunkt i dBi","Effekttap i kabelen"],"Forskriften angir utgangseffekt som PEP, målt der antennen kobles til senderens siste trinn.");
+Q("tx","Hva er PEP?",["Spisseffekt i omhyllingskurven (Peak Envelope Power)","Gjennomsnittlig bærebølgeeffekt","Effekt målt ved antennens fødepunkt i dBi","Effekttap i kabelen"],"Forskriften angir utgangseffekt som PEP, målt der antennen kobles til senderens siste trinn.",0,1);
 
 Q("txf","Hva kan forårsake at frekvensen til en sender driver?",["Temperaturendringer i oscillatoren","For lang antenne","For lav SWR","For høy mikrofonforsterkning"],"Varme endrer komponentverdiene. Hold oscillatoren unna varmekilder og bruk stabile komponenter.");
 Q("txf","Hvorfor bør oscillatoren få stabil og godt filtrert forsyningsspenning?",["Spenningsvariasjoner kan endre frekvensen","For å øke effekten","For å redusere SWR","For å øke modulasjonen"],"En stabilisert spenning og buffertrinn reduserer frekvensdrift og «chirp».");
-Q("txf","Hvorfor brukes et buffertrinn etter en oscillator?",["For at belastningsendringer ikke skal endre oscillatorfrekvensen","For å doble frekvensen","For å lage sidebånd","For å filtrere bort harmoniske"],"Bufferen, ofte en emitterfølger, isolerer oscillatoren fra resten av senderen.");
-Q("txf","Hva skjer hvis en SSB-sender overstyres med for høy mikrofonforsterkning?",["Signalet blir forvrengt og bredt (splatter)","Signalet blir smalere","Bærebølgen forsvinner","Ingenting – ALC fikser alt"],"Overstyring av sluttrinnet gir intermodulasjonsprodukter som sprer seg utover nabofrekvensene.");
-Q("txf","Hva er intermodulasjon i en sender?",["Nye frekvenser som oppstår når flere signaler blandes i et ulineært trinn","Støy fra strømforsyningen","Frekvensdrift fra varme","Nøkkelklikk på CW"],"Typiske produkter er 2f1 − f2 og 2f2 − f1 (tredjeordens intermodulasjon), som havner tett ved signalet.");
+Q("txf","Hvorfor brukes et buffertrinn etter en oscillator?",["For at belastningsendringer ikke skal endre oscillatorfrekvensen","For å doble frekvensen","For å lage sidebånd","For å filtrere bort harmoniske"],"Bufferen, ofte en emitterfølger, isolerer oscillatoren fra resten av senderen.",0,1);
+Q("txf","Hva skjer hvis en SSB-sender overstyres med for høy mikrofonforsterkning?",["Signalet blir forvrengt og bredt (splatter)","Signalet blir smalere","Bærebølgen forsvinner","Ingenting – ALC fikser alt"],"Overstyring av sluttrinnet gir intermodulasjonsprodukter som sprer seg utover nabofrekvensene.",0,1);
+Q("txf","Hva er intermodulasjon i en sender?",["Nye frekvenser som oppstår når flere signaler blandes i et ulineært trinn","Støy fra strømforsyningen","Frekvensdrift fra varme","Nøkkelklikk på CW"],"Typiske produkter er 2f1 − f2 og 2f2 − f1 (tredjeordens intermodulasjon), som havner tett ved signalet.",0,1);
 Q("txf","Hva er parasittsvingninger?",["Uønskede selvsvingninger i et forsterkertrinn","Harmoniske av lydsignalet","Atmosfærisk støy","Forstyrrelser fra en nabo"],"De kan ligge langt unna sendefrekvensen og stråle ut utenfor amatørbåndene.");
 Q("txf","Hva er kabinettutstråling?",["RF som stråler direkte fra senderens innmat i stedet for gjennom antennen","Effekt som reflekteres fra antennen","Strøm i jordledningen","Lyd fra høyttaleren"],"God skjerming i en metallkasse med filtrerte ledninger inn og ut hindrer dette.");
 Q("txf","Hva kalles uønskede sendinger utenfor det nødvendige båndet?",["Uønsket utstråling (spurious)","Selektivitet","Speilfrekvens","Rombølge"],"Uønsket utstråling omfatter blant annet harmoniske, parasittsvingninger og intermodulasjonsprodukter.");
 Q("txf","Hva er en vanlig operatørfeil som gir forstyrrelser?",["For høyt mikrofonnivå eller for høy taleprosessering","For lav effekt","Å bruke lavpassfilter","Å bruke dummy load ved justering"],"Juster riktig, og test med en annen amatør for å høre hvordan du låter.");
-Q("txf","Hvorfor bør du justere senderen inn i en kunstantenne (dummy load)?",["For å unngå å sende ut forstyrrende signaler under justering","For å øke effekten","For å måle bølgeutbredelse","For å forbedre mottaket"],"Kunstantennen er en motstand (ofte 50 Ω) som tar opp effekten uten å stråle nevneverdig.");
+Q("txf","Hvorfor bør du justere senderen inn i en kunstantenne (dummy load)?",["For å unngå å sende ut forstyrrende signaler under justering","For å øke effekten","For å måle bølgeutbredelse","For å forbedre mottaket"],"Kunstantennen er en motstand (ofte 50 Ω) som tar opp effekten uten å stråle nevneverdig.",0,1);
 
 Q("rx","Hva betyr følsomhet (sensitivitet) for en mottaker?",["Hvor svake signaler den kan ta inn med definert kvalitet","Hvor godt den skiller nærliggende stasjoner","Hvor sterkt den kan spille","Hvor stabil frekvensen er"],"Følsomhet oppgis ofte som f.eks. 0,2 µV ved 12 dB SINAD.");
 Q("rx","Hva betyr selektivitet for en mottaker?",["Evnen til å skille ut ønsket signal fra signaler på nærliggende frekvenser","Evnen til å ta inn svake signaler","Evnen til å spille høyt","Evnen til å holde stabil frekvens"],"Selektiviteten avgjøres i stor grad av filtrene i mellomfrekvensen.");
 Q("rx","Hva betyr stabilitet for en mottaker?",["At den holder seg på innstilt frekvens","At den ikke overstyres","At den har lav støy","At den har AGC"],"Dårlig stabilitet gjør at du må etterjustere frekvensen hele tiden.");
-Q("rx","Hva er den store fordelen med en superheterodynmottaker?",["Det meste av forsterkning og selektivitet skjer på én fast mellomfrekvens","Den har ingen speilfrekvens","Den trenger ingen oscillator","Den er enklest mulig"],"Filtrene kan optimaliseres for én frekvens uansett hvilken frekvens du lytter på.");
+Q("rx","Hva er den store fordelen med en superheterodynmottaker?",["Det meste av forsterkning og selektivitet skjer på én fast mellomfrekvens","Den har ingen speilfrekvens","Den trenger ingen oscillator","Den er enklest mulig"],"Filtrene kan optimaliseres for én frekvens uansett hvilken frekvens du lytter på.",0,1);
 Q("rx","Hva gjør blanderen (mikseren) i en superheterodynmottaker?",["Blander signalet med lokaloscillatoren slik at det havner på mellomfrekvensen","Forsterker lydsignalet","Gjør om RF til likestrøm","Lager BFO-tonen"],"Mellomfrekvensen er summen eller differansen av signal og lokaloscillator.");
-Q("rx","En mottaker har mellomfrekvens 455 kHz og lokaloscillatoren ligger over signalet. Du lytter på 7,000 MHz. Hva er lokaloscillatorfrekvensen?",["7,455 MHz","6,545 MHz","7,910 MHz","455 kHz"],"LO = signal + MF = 7,000 + 0,455 = 7,455 MHz.",1);
-Q("rx","En mottaker har MF 10,7 MHz og LO over signalet. Den er innstilt på 145,0 MHz. Hva er speilfrekvensen?",["166,4 MHz","155,7 MHz","134,3 MHz","123,6 MHz"],"Speilfrekvens = signal + 2 × MF = 145,0 + 21,4 = 166,4 MHz.",1);
-Q("rx","Hvordan kan speilfrekvensundertrykkelsen forbedres?",["Høyere mellomfrekvens og bedre filter før blanderen","Lavere mellomfrekvens","Mer lavfrekvensforsterkning","Kortere antenne"],"Speilfrekvensen ligger 2 × MF fra signalet. Høy MF flytter den langt unna, så den lettere filtreres bort i HF-trinnet.");
+Q("rx","En mottaker har mellomfrekvens 455 kHz og lokaloscillatoren ligger over signalet. Du lytter på 7,000 MHz. Hva er lokaloscillatorfrekvensen?",["7,455 MHz","6,545 MHz","7,910 MHz","455 kHz"],"LO = signal + MF = 7,000 + 0,455 = 7,455 MHz.",1,1);
+Q("rx","En mottaker har MF 10,7 MHz og LO over signalet. Den er innstilt på 145,0 MHz. Hva er speilfrekvensen?",["166,4 MHz","155,7 MHz","134,3 MHz","123,6 MHz"],"Speilfrekvens = signal + 2 × MF = 145,0 + 21,4 = 166,4 MHz.",1,1);
+Q("rx","Hvordan kan speilfrekvensundertrykkelsen forbedres?",["Høyere mellomfrekvens og bedre filter før blanderen","Lavere mellomfrekvens","Mer lavfrekvensforsterkning","Kortere antenne"],"Speilfrekvensen ligger 2 × MF fra signalet. Høy MF flytter den langt unna, så den lettere filtreres bort i HF-trinnet.",0,1);
 Q("rx","Hvorfor brukes dobbel superheterodyn?",["En høy første MF gir god speildemping, og en lav andre MF gir god selektivitet","For å få to lydkanaler","For å unngå oscillatorer","For å kunne motta to bånd samtidig"],"Det er et kompromiss mellom speilfrekvensdemping og selektivitet.");
 Q("rx","Hva gjør BFO-en i en mottaker?",["Lager en tone slik at CW kan høres","Fjerner støy","Regulerer forsterkningen automatisk","Lager mellomfrekvensen"],"BFO = Beat Frequency Oscillator. Den blandes med CW-signalet i detektoren og gir en hørbar tone.");
-Q("rx","Hvilken detektor brukes for SSB og CW?",["Produktdetektor","Diodedetektor (omhyllingsdetektor)","Diskriminator","Ratiodetektor"],"Produktdetektoren blander MF-signalet med BFO/bærebølgeoscillatoren og gjenskaper lyden.");
+Q("rx","Hvilken detektor brukes for SSB og CW?",["Produktdetektor","Diodedetektor (omhyllingsdetektor)","Diskriminator","Ratiodetektor"],"Produktdetektoren blander MF-signalet med BFO/bærebølgeoscillatoren og gjenskaper lyden.",0,1);
 Q("rx","Hvilken detektor er vanlig for AM?",["Diodedetektor (omhyllingsdetektor)","Produktdetektor med BFO","Diskriminator","Kvadraturdetektor"],"Dioden likeretter MF-signalet og et RC-ledd tar ut omhyllingskurven, altså lyden.");
-Q("rx","Hvilken detektor brukes for FM?",["Diskriminator eller kvadraturdetektor","Diodedetektor","Produktdetektor","Krystalldetektor"],"En FM-mottaker har ofte også en begrenser foran detektoren som fjerner amplitudevariasjoner.");
-Q("rx","Hva gjør AGC (automatisk forsterkningskontroll)?",["Holder lydnivået omtrent konstant ved varierende signalstyrke","Holder frekvensen konstant","Fjerner speilfrekvensen","Lager mellomfrekvensen"],"AGC regulerer ned forsterkningen i HF- og MF-trinnene når signalet er sterkt.");
+Q("rx","Hvilken detektor brukes for FM?",["Diskriminator eller kvadraturdetektor","Diodedetektor","Produktdetektor","Krystalldetektor"],"En FM-mottaker har ofte også en begrenser foran detektoren som fjerner amplitudevariasjoner.",0,1);
+Q("rx","Hva gjør AGC (automatisk forsterkningskontroll)?",["Holder lydnivået omtrent konstant ved varierende signalstyrke","Holder frekvensen konstant","Fjerner speilfrekvensen","Lager mellomfrekvensen"],"AGC regulerer ned forsterkningen i HF- og MF-trinnene når signalet er sterkt.",0,1);
 Q("rx","Hva gjør begrenseren i en FM-mottaker?",["Fjerner amplitudevariasjoner og dermed mye støy","Begrenser frekvensavviket","Begrenser lydstyrken","Begrenser båndbredden til 3 kHz"],"FM bærer informasjonen i frekvensen, så amplitudestøy kan klippes bort.");
 Q("rx","Hva gjør squelch (støysperre) i en FM-mottaker?",["Demper lyden når det ikke er signal","Fjerner speilfrekvenser","Øker følsomheten","Bytter mellom sidebånd"],"Uten squelch hører du kraftig sus når kanalen er ledig.");
 Q("rx","Hvorfor bør HF-forsterkeren (første trinn) i en mottaker ha lav egenstøy?",["Støy fra første trinn forsterkes av alle trinnene etter","Den bestemmer lydkvaliteten","Den bestemmer speilfrekvensen alene","Den styrer AGC"],"Første trinn er avgjørende for mottakerens følsomhet, særlig på VHF og høyere.");
 Q("rx","Hva er en krystallkalibrator i en mottaker?",["En stabil krystalloscillator som gir referansesignaler for å kontrollere skalaen","Et krystallfilter for SSB","En krystallmikrofon","En detektor for AM"],"Den gir markeringssignaler med faste mellomrom, f.eks. hver 100 kHz.");
 Q("rx","Hva er blokkering i en mottaker?",["Et sterkt signal nær ønsket frekvens reduserer følsomheten","Mottakeren låser seg på én kanal","Antennen er frakoblet","AGC slår seg av"],"Mottakeren overstyres av det sterke signalet slik at det svake ønskede signalet blir svakere.");
 
-Q("dsp","Hva sier samplingsteoremet (Nyquist)?",["Samplingsfrekvensen må være minst dobbelt så høy som høyeste signalfrekvens","Samplingsfrekvensen må være lik signalfrekvensen","Samplingsfrekvensen må være halvparten av signalfrekvensen","Antall bit må være minst 16"],"Høyeste frekvens som kan gjengis, Nyquist-frekvensen, er halve samplingsfrekvensen.");
-Q("dsp","En A/D-omformer sampler med 48 kHz. Hva er høyeste frekvens som kan digitaliseres riktig?",["24 kHz","48 kHz","96 kHz","12 kHz"],"Nyquist-frekvensen er fs / 2 = 24 kHz.",1);
-Q("dsp","Du vil digitalisere signaler opp til 3 kHz. Hva er minste samplingsfrekvens?",["6 kHz","3 kHz","1,5 kHz","12 kHz"],"Minst to sampler per periode: 2 × 3 kHz = 6 kHz. I praksis brukes litt mer for å ha margin.",1);
-Q("dsp","Hvor mange nivåer kan en 8-bits A/D-omformer gjengi?",["256","8","16","512"],"Antall nivåer = 2ⁿ = 2⁸ = 256.",1);
+Q("dsp","Hva sier samplingsteoremet (Nyquist)?",["Samplingsfrekvensen må være minst dobbelt så høy som høyeste signalfrekvens","Samplingsfrekvensen må være lik signalfrekvensen","Samplingsfrekvensen må være halvparten av signalfrekvensen","Antall bit må være minst 16"],"Høyeste frekvens som kan gjengis, Nyquist-frekvensen, er halve samplingsfrekvensen.",0,1);
+Q("dsp","En A/D-omformer sampler med 48 kHz. Hva er høyeste frekvens som kan digitaliseres riktig?",["24 kHz","48 kHz","96 kHz","12 kHz"],"Nyquist-frekvensen er fs / 2 = 24 kHz.",1,1);
+Q("dsp","Du vil digitalisere signaler opp til 3 kHz. Hva er minste samplingsfrekvens?",["6 kHz","3 kHz","1,5 kHz","12 kHz"],"Minst to sampler per periode: 2 × 3 kHz = 6 kHz. I praksis brukes litt mer for å ha margin.",1,1);
+Q("dsp","Hvor mange nivåer kan en 8-bits A/D-omformer gjengi?",["256","8","16","512"],"Antall nivåer = 2ⁿ = 2⁸ = 256.",1,1);
 Q("dsp","Hvor mange nivåer kan en 12-bits A/D-omformer gjengi?",["4096","1024","2048","144"],"2¹² = 4096 nivåer.",1);
 Q("dsp","Omtrent hvor mye bedre blir signal/støy-forholdet for hver ekstra bit i A/D-omformeren?",["6 dB","3 dB","1 dB","10 dB"],"Hver ekstra bit dobler antall nivåer og gir ca. 6 dB lavere kvantiseringsstøy.");
 Q("dsp","Hva er aliasing?",["Frekvenser over Nyquist-frekvensen dukker opp som falske lavere frekvenser","Støy fra avrunding til nærmeste nivå","At filteret ringer","At signalet blir forsinket"],"Et analogt lavpassfilter (anti-aliasingfilter) før A/D-omformeren hindrer dette.");
@@ -478,55 +481,55 @@ Q("dsp","Hva kjennetegner FT8?",["Svak-signal digital modus med faste 15-sekunde
 Q("dsp","Hva er PSK31?",["En smalbåndet digital tekstmodus med fasemodulasjon, utviklet av radioamatører","En type pakkeradio på 1200 baud","En digital talemodus","Et SSB-filter"],"PSK31 bruker datamaskin med lydkort og ca. 31 baud. Den klarer seg godt i støy.");
 Q("ant","Hva er bølgelengden for 14 MHz?",["Ca. 21 m","Ca. 14 m","Ca. 42 m","Ca. 10 m"],"λ = 300 / f(MHz) = 300 / 14 ≈ 21,4 m.",1);
 Q("ant","Hva er bølgelengden for 145 MHz?",["Ca. 2 m","Ca. 20 cm","Ca. 70 cm","Ca. 4 m"],"λ = 300 / 145 ≈ 2,07 m. Derfor kalles båndet 2-metersbåndet.",1);
-Q("ant","Hvilken frekvens har en bølgelengde på 40 m?",["7,5 MHz","4 MHz","12 MHz","75 MHz"],"f = 300 / λ = 300 / 40 = 7,5 MHz.",1);
-Q("ant","Omtrent hvor lang blir en halvbølgedipol for 7,1 MHz (med forkortningsfaktor 0,95)?",["Ca. 20 m","Ca. 42 m","Ca. 10 m","Ca. 40 m"],"λ/2 ≈ 143 / f = 143 / 7,1 ≈ 20,1 m.",1);
+Q("ant","Hvilken frekvens har en bølgelengde på 40 m?",["7,5 MHz","4 MHz","12 MHz","75 MHz"],"f = 300 / λ = 300 / 40 = 7,5 MHz.",1,1);
+Q("ant","Omtrent hvor lang blir en halvbølgedipol for 7,1 MHz (med forkortningsfaktor 0,95)?",["Ca. 20 m","Ca. 42 m","Ca. 10 m","Ca. 40 m"],"λ/2 ≈ 143 / f = 143 / 7,1 ≈ 20,1 m.",1,1);
 Q("ant","Omtrent hvor lang er hvert ben i en halvbølgedipol for 14,2 MHz?",["Ca. 5 m","Ca. 10 m","Ca. 2,5 m","Ca. 20 m"],"Hele dipolen ≈ 143/14,2 ≈ 10 m, så hvert ben er ca. 5 m.",1);
-Q("ant","Hva er impedansen i fødepunktet til en senterfødet halvbølgedipol i fritt rom?",["Ca. 73 Ω","Ca. 300 Ω","Ca. 2000 Ω","Ca. 25 Ω"],"Dipolen fødes i strømmaksimum, så impedansen er lav. Teoretisk er den ca. 73 Ω.");
+Q("ant","Hva er impedansen i fødepunktet til en senterfødet halvbølgedipol i fritt rom?",["Ca. 73 Ω","Ca. 300 Ω","Ca. 2000 Ω","Ca. 25 Ω"],"Dipolen fødes i strømmaksimum, så impedansen er lav. Teoretisk er den ca. 73 Ω.",0,1);
 Q("ant","Hvordan er strøm og spenning fordelt på en halvbølgedipol?",["Strømmaksimum på midten, spenningsmaksimum i endene","Spenningsmaksimum på midten, strømmaksimum i endene","Jevnt fordelt","Strøm og spenning har maksimum på samme sted"],"Derfor har en endepunktsfødet halvbølge høy impedans.");
-Q("ant","Hva er impedansen til en foldet dipol?",["Ca. 300 Ω","Ca. 73 Ω","Ca. 36 Ω","Ca. 50 Ω"],"Med to like ledere blir impedansen ca. 4 × 73 ≈ 292 Ω.");
+Q("ant","Hva er impedansen til en foldet dipol?",["Ca. 300 Ω","Ca. 73 Ω","Ca. 36 Ω","Ca. 50 Ω"],"Med to like ledere blir impedansen ca. 4 × 73 ≈ 292 Ω.",0,1);
 Q("ant","Hva kjennetegner en endepunktsfødet halvbølgeantenne?",["Høy impedans i fødepunktet","Svært lav impedans i fødepunktet","Den trenger radialer","Den er alltid vertikal"],"Den fødes i spenningsmaksimum og trenger ofte en tilpasningskrets.");
 Q("ant","Hva er impedansen til en kvartbølge vertikal (groundplane) med horisontale radialer?",["Ca. 36 Ω","Ca. 73 Ω","Ca. 300 Ω","Ca. 600 Ω"],"Ved å vinkle radialene nedover (ca. 45°) øker impedansen mot 50 Ω.");
 Q("ant","Hvilken polarisasjon har en vertikal kvartbølgeantenne?",["Vertikal","Horisontal","Sirkulær","Ingen"],"Polarisasjonen følger retningen på det elektriske feltet, altså antennens elementer.");
 Q("ant","Hvilket element i en Yagi-Uda-antenne er lengst?",["Reflektoren","Direktoren","Det drevne elementet","Alle er like lange"],"Reflektoren er litt lengre enn det drevne elementet, direktorene litt kortere.");
 Q("ant","Hvilken vei sender en Yagi-Uda-antenne best?",["Fra reflektoren mot direktorene","Fra direktorene mot reflektoren","Like godt i alle retninger","Rett opp"],"Direktorene ligger i hovedstrålingsretningen.");
 Q("ant","Hva er front-til-bak-forholdet for en retningsantenne?",["Forholdet mellom stråling forover og bakover","Forholdet mellom fremre og bakre elements lengde","Forholdet mellom SWR forover og bakover","Antall direktorer delt på antall reflektorer"],"Det oppgis i dB. Høyt F/B-forhold betyr at antennen demper signaler bakfra.");
-Q("ant","Hva betyr dBi?",["Antenneforsterkning i forhold til en isotropisk antenne","Forsterkning i forhold til en dipol","Kabeltap per 100 m","Signalstyrke på S-meteret"],"En dipol har ca. 2,15 dBi. dBd betyr forsterkning i forhold til en dipol.");
-Q("ant","En sender gir 100 W til en antenne med 10 dBd forsterkning (uten kabeltap). Hva er e.r.p.?",["1000 W","110 W","200 W","10 W"],"10 dB er 10 ganger. e.r.p. = 100 W × 10 = 1000 W.",1);
+Q("ant","Hva betyr dBi?",["Antenneforsterkning i forhold til en isotropisk antenne","Forsterkning i forhold til en dipol","Kabeltap per 100 m","Signalstyrke på S-meteret"],"En dipol har ca. 2,15 dBi. dBd betyr forsterkning i forhold til en dipol.",0,1);
+Q("ant","En sender gir 100 W til en antenne med 10 dBd forsterkning (uten kabeltap). Hva er e.r.p.?",["1000 W","110 W","200 W","10 W"],"10 dB er 10 ganger. e.r.p. = 100 W × 10 = 1000 W.",1,1);
 Q("ant","Hva er forskjellen på e.r.p. og e.i.r.p.?",["e.r.p. er i forhold til en dipol, e.i.r.p. i forhold til en isotropisk antenne","e.r.p. er bare for HF","e.i.r.p. inkluderer ikke antenneforsterkning","Det er ingen forskjell"],"e.i.r.p. er ca. 2,15 dB (1,64 ganger) høyere enn e.r.p. for samme oppsett.");
 Q("ant","Hva er hensikten med en sperrekrets (trap) i en dipol?",["Gjøre dipolen brukbar på flere bånd","Øke forsterkningen","Fjerne harmoniske","Gjøre antennen vertikal"],"Sperrekretsen er en parallellresonanskrets som «kobler fra» resten av antennen på det høyeste båndet.");
 Q("ant","Hva bestemmer forsterkningen til en parabolantenne?",["Diameteren i forhold til bølgelengden","Fargen på reflektoren","Lengden på fødekabelen","Polarisasjonen"],"Større skål og høyere frekvens gir mer forsterkning og smalere strålingslobe.");
-Q("ant","Hva er hastighetsfaktoren til en koaksialkabel med massiv polyetylen-isolasjon?",["Ca. 0,66","Ca. 0,95","Ca. 0,33","1,0"],"Kabel med skum- eller luftisolasjon ligger på ca. 0,8–0,95, åpen stigefeeder på 0,93–0,97.");
+Q("ant","Hva er hastighetsfaktoren til en koaksialkabel med massiv polyetylen-isolasjon?",["Ca. 0,66","Ca. 0,95","Ca. 0,33","1,0"],"Kabel med skum- eller luftisolasjon ligger på ca. 0,8–0,95, åpen stigefeeder på 0,93–0,97.",0,1);
 Q("ant","Hvor lang er en elektrisk kvartbølge av koaks med hastighetsfaktor 0,66 på 145 MHz?",["Ca. 34 cm","Ca. 52 cm","Ca. 1,4 m","Ca. 21 cm"],"λ = 300/145 ≈ 2,07 m. λ/4 ≈ 0,517 m. × 0,66 ≈ 0,34 m.",1);
 Q("ant","Hva er karakteristisk impedans for vanlig koaksialkabel til amatørradio?",["50 Ω","300 Ω","600 Ω","25 Ω"],"75 Ω brukes for TV. Åpen stigefeeder har gjerne 300–600 Ω.");
-Q("ant","Hva er en balun?",["Overgang mellom balansert og ubalansert føding","Et lavpassfilter","En antennebryter","En type kontakt"],"Navnet kommer fra BALanced–UNbalanced. Den hindrer også fellesmodusstrøm på utsiden av koaksen.");
+Q("ant","Hva er en balun?",["Overgang mellom balansert og ubalansert føding","Et lavpassfilter","En antennebryter","En type kontakt"],"Navnet kommer fra BALanced–UNbalanced. Den hindrer også fellesmodusstrøm på utsiden av koaksen.",0,1);
 Q("ant","Hva slags fødeledning er stigefeeder (parledning)?",["Balansert","Ubalansert","Bølgeleder","Koaksial"],"Koaksialkabel er ubalansert. Stigefeeder har lavt tap, også ved høy SWR.");
-Q("ant","Hva er SWR hvis en 50 Ω kabel er koblet til en last på 100 Ω?",["2:1","1:1","4:1","1,5:1"],"For ren resistiv last: SWR = største / minste impedans = 100 / 50 = 2.",1);
-Q("ant","Hva er SWR når en 50 Ω kabel er koblet til en antenne med 25 Ω (resistiv)?",["2:1","0,5:1","1:1","3:1"],"SWR = 50 / 25 = 2. SWR er alltid 1 eller større.",1);
+Q("ant","Hva er SWR hvis en 50 Ω kabel er koblet til en last på 100 Ω?",["2:1","1:1","4:1","1,5:1"],"For ren resistiv last: SWR = største / minste impedans = 100 / 50 = 2.",1,1);
+Q("ant","Hva er SWR når en 50 Ω kabel er koblet til en antenne med 25 Ω (resistiv)?",["2:1","0,5:1","1:1","3:1"],"SWR = 50 / 25 = 2. SWR er alltid 1 eller større.",1,1);
 Q("ant","Hva betyr SWR 1:1?",["Perfekt tilpasning – ingen effekt reflekteres","All effekt reflekteres","Antennen er kortsluttet","Kabelen er åpen"],"Da er lastimpedansen lik kabelens karakteristiske impedans.");
-Q("ant","Hva brukes en kvartbølge-transformator (kvartbølgelinje) til?",["Tilpasse to ulike impedanser","Dempe harmoniske","Lage sirkulær polarisasjon","Måle SWR"],"Zinn = Z0² / Zlast. En 75 Ω kvartbølge kan for eksempel tilpasse 112 Ω til 50 Ω.");
+Q("ant","Hva brukes en kvartbølge-transformator (kvartbølgelinje) til?",["Tilpasse to ulike impedanser","Dempe harmoniske","Lage sirkulær polarisasjon","Måle SWR"],"Zinn = Z0² / Zlast. En 75 Ω kvartbølge kan for eksempel tilpasse 112 Ω til 50 Ω.",0,1);
 Q("ant","Hvordan oppfører en kvartbølgelinje seg når den er kortsluttet i enden?",["Som en høy impedans (åpen krets) i inngangen","Som en kortslutning i inngangen","Som 50 Ω","Som en ren kondensator"],"En kvartbølge snur impedansen: kortslutning blir til åpen krets, og omvendt.");
-Q("ant","Hva gjør en antennetuner?",["Tilpasser senderen til antennesystemet slik at senderen ser ca. 50 Ω","Gjør antennen resonant på alle bånd uten tap","Øker antennens forsterkning","Fjerner støy fra mottaket"],"Tuneren endrer ikke SWR på kabelen mellom tuner og antenne, bare det senderen ser.");
+Q("ant","Hva gjør en antennetuner?",["Tilpasser senderen til antennesystemet slik at senderen ser ca. 50 Ω","Gjør antennen resonant på alle bånd uten tap","Øker antennens forsterkning","Fjerner støy fra mottaket"],"Tuneren endrer ikke SWR på kabelen mellom tuner og antenne, bare det senderen ser.",0,1);
 Q("ant","Hvordan oppfører en antenne seg som er for kort for frekvensen?",["Kapasitiv","Induktiv","Ren resistiv","Den har uendelig impedans"],"En for kort antenne er kapasitiv og kan forlenges elektrisk med en spole. En for lang antenne er induktiv.");
 Q("ant","Hva er en bølgeleder?",["Et metallrør som leder mikrobølger","En stigefeeder for HF","En jordledning","En type balun"],"Bølgeledere brukes på mikrobølger der koaks har store tap.");
 
 Q("prop","Hvor fort beveger radiobølger seg i fritt rom?",["300 000 km/s","300 km/s","30 000 km/s","3 000 000 km/s"],"Radiobølger er elektromagnetiske bølger og går med lysets hastighet.");
-Q("prop","Hvilket ionosfærelag ligger lavest, i ca. 70–80 km høyde?",["D-laget","E-laget","F1-laget","F2-laget"],"D-laget absorberer særlig lave frekvenser på dagtid og forsvinner nesten helt om natten.");
-Q("prop","I hvilken høyde ligger E-laget?",["Ca. 120 km","Ca. 70 km","Ca. 300 km","Ca. 1000 km"],"E-laget finnes hovedsakelig på dagtid.");
-Q("prop","I hvilken høyde ligger F2-laget?",["Ca. 300–400 km","Ca. 120 km","Ca. 70–80 km","Ca. 36 000 km"],"F2-laget gir de fleste langdistanseforbindelsene på HF. Om natten smelter F1 og F2 sammen til ett F-lag.");
+Q("prop","Hvilket ionosfærelag ligger lavest, i ca. 70–80 km høyde?",["D-laget","E-laget","F1-laget","F2-laget"],"D-laget absorberer særlig lave frekvenser på dagtid og forsvinner nesten helt om natten.",0,1);
+Q("prop","I hvilken høyde ligger E-laget?",["Ca. 120 km","Ca. 70 km","Ca. 300 km","Ca. 1000 km"],"E-laget finnes hovedsakelig på dagtid.",0,1);
+Q("prop","I hvilken høyde ligger F2-laget?",["Ca. 300–400 km","Ca. 120 km","Ca. 70–80 km","Ca. 36 000 km"],"F2-laget gir de fleste langdistanseforbindelsene på HF. Om natten smelter F1 og F2 sammen til ett F-lag.",0,1);
 Q("prop","Hva skjer med D-laget om natten?",["Det forsvinner nesten helt","Det blir sterkere","Det flytter seg opp til 300 km","Det reflekterer VHF"],"Derfor går 160 og 80 m mye lenger om natten.");
 Q("prop","Hva gjør D-laget med lave HF-frekvenser på dagtid?",["Absorberer dem","Reflekterer dem til andre siden av jorden","Forsterker dem","Polariserer dem"],"D-laget bryter ikke av signalene, det demper dem. Absorpsjonen er størst på lave frekvenser.");
 Q("prop","Hvor lang er solflekksyklusen omtrent?",["11 år","1 år","27 dager","22 måneder"],"Mange solflekker gir sterkere ionisering og høyere MUF, slik at de høye HF-båndene åpner.");
-Q("prop","Hva er MUF?",["Høyeste frekvens som returneres fra ionosfæren mellom to steder","Laveste brukbare frekvens","Kritisk frekvens rett opp","Frekvensen med minst fading"],"MUF = Maximum Usable Frequency. Den er alltid høyere enn den kritiske frekvensen.");
-Q("prop","Hva er kritisk frekvens?",["Høyeste frekvens som reflekteres når bølgen sendes rett opp","Laveste frekvens som når fram","Frekvensen der D-laget forsvinner","MUF for en 4000 km strekning"],"For skrå innfallsvinkler er MUF høyere, opptil ca. 5 ganger kritisk frekvens.");
+Q("prop","Hva er MUF?",["Høyeste frekvens som returneres fra ionosfæren mellom to steder","Laveste brukbare frekvens","Kritisk frekvens rett opp","Frekvensen med minst fading"],"MUF = Maximum Usable Frequency. Den er alltid høyere enn den kritiske frekvensen.",0,1);
+Q("prop","Hva er kritisk frekvens?",["Høyeste frekvens som reflekteres når bølgen sendes rett opp","Laveste frekvens som når fram","Frekvensen der D-laget forsvinner","MUF for en 4000 km strekning"],"For skrå innfallsvinkler er MUF høyere, opptil ca. 5 ganger kritisk frekvens.",0,1);
 Q("prop","Hva er LUF?",["Laveste brukbare frekvens, bestemt av absorpsjon i D-laget","Laveste frekvens som kan reflekteres i F2","Frekvens for jordbølge","En digital modus"],"Hvis LUF er høyere enn MUF, går det ikke an å få forbindelse via ionosfæren.");
-Q("prop","Hva er skip-sonen (død sone)?",["Området mellom der jordbølgen tar slutt og der rombølgen kommer ned","Området rett under antennen","Området bak en Yagi","Området over 300 km høyde"],"Stasjoner i skip-sonen kan ikke høre hverandre selv om stasjoner lenger unna gjør det.");
+Q("prop","Hva er skip-sonen (død sone)?",["Området mellom der jordbølgen tar slutt og der rombølgen kommer ned","Området rett under antennen","Området bak en Yagi","Området over 300 km høyde"],"Stasjoner i skip-sonen kan ikke høre hverandre selv om stasjoner lenger unna gjør det.",0,1);
 Q("prop","Hvordan påvirker lav utstrålingsvinkel rekkevidden på HF?",["Lengre hopp og lengre rekkevidde","Kortere hopp","Ingen påvirkning","Bare jordbølge"],"Lav vinkel gir lange hopp. Derfor er antennehøyde viktig for DX.");
 Q("prop","Hva er fading (QSB)?",["Variasjon i signalstyrken","Konstant svakt signal","Forstyrrelse fra en annen stasjon","Atmosfærisk støy"],"Fading kan skyldes at signaler som har gått ulike veier summeres i varierende fase.");
-Q("prop","Hva er sporadisk E?",["Kraftig ionisering i E-laget som kan gi forbindelser på 6 m og 2 m","Et lag som bare finnes om natten","Nordlys på HF","Refleksjon fra månen"],"Sporadisk E opptrer oftest om sommeren og kan gi sterke signaler over ca. 1000–2000 km.");
+Q("prop","Hva er sporadisk E?",["Kraftig ionisering i E-laget som kan gi forbindelser på 6 m og 2 m","Et lag som bare finnes om natten","Nordlys på HF","Refleksjon fra månen"],"Sporadisk E opptrer oftest om sommeren og kan gi sterke signaler over ca. 1000–2000 km.",0,1);
 Q("prop","Hvordan høres CW-signaler ut via aurora (nordlys)?",["Hese og susete","Ekstra rene","Med ekko på flere sekunder","Helt normale"],"Aurora-refleksjon gir skjelvende signaler. Man retter antennen mot nord.");
 Q("prop","Hva er troposfærisk dukting?",["Bølgene fanges i et luftlag (temperaturinversjon) og går langt","Refleksjon i F2-laget","Absorpsjon i D-laget","Refleksjon fra meteorer"],"Dukting gir uvanlig lang rekkevidde på VHF og UHF, gjerne ved høytrykk.");
-Q("prop","Hvor mye lenger enn synsvidden er radiohorisonten på VHF omtrent?",["Ca. 30 %","Ca. 100 %","Ca. 5 %","Den er kortere"],"Troposfæren bøyer bølgene litt nedover slik at de delvis følger jordkrumningen.");
-Q("prop","To stasjoner har antenner i 9 m og 4 m høyde. Omtrent hvor langt er radiohorisonten mellom dem (d = 4√h)?",["20 km","13 km","52 km","36 km"],"4 × √9 + 4 × √4 = 12 + 8 = 20 km.",1);
+Q("prop","Hvor mye lenger enn synsvidden er radiohorisonten på VHF omtrent?",["Ca. 30 %","Ca. 100 %","Ca. 5 %","Den er kortere"],"Troposfæren bøyer bølgene litt nedover slik at de delvis følger jordkrumningen.",0,1);
+Q("prop","To stasjoner har antenner i 9 m og 4 m høyde. Omtrent hvor langt er radiohorisonten mellom dem (d = 4√h)?",["20 km","13 km","52 km","36 km"],"4 × √9 + 4 × √4 = 12 + 8 = 20 km.",1,1);
 Q("prop","Hva er jordbølge?",["En bølge som følger jordoverflaten, best på lave frekvenser","En bølge reflektert fra F2-laget","En bølge i et kabelrør","Støy fra lynnedslag"],"Jordbølgen går lengst over sjø og er hovedsakelig vertikalt polarisert.");
 Q("prop","Hvilket HF-bånd er ofte åpent for DX gjennom hele solsyklusen på dagtid?",["20 m (14 MHz)","160 m","10 m (28 MHz)","6 m"],"20 m er det mest pålitelige DX-båndet. 10 m avhenger sterkt av solflekktallet.");
 Q("prop","Hva skjer ved en plutselig ionosfærisk forstyrrelse (SID) etter et solutbrudd?",["D-laget ioniseres kraftig og HF kan dø ut på solsiden","MUF stiger og alle bånd åpner","Sporadisk E dannes på 70 cm","Ingen påvirkning på radio"],"Kraftig UV- og røntgenstråling gir sterk D-lagsabsorpsjon i noen minutter til timer.");
@@ -534,35 +537,35 @@ Q("prop","Hva skjer ved en plutselig ionosfærisk forstyrrelse (SID) etter et so
 Q("emc","Hva betyr EMC?",["Elektromagnetisk kompatibilitet","Elektronisk modulert kanal","Ekstern modulasjonskontroll","Effektmåling ved kontakt"],"EMC handler om at elektronisk utstyr kan virke side om side uten å forstyrre hverandre.");
 Q("emc","Hva er de to grunnprinsippene i EMC?",["Begrense utstråling og ha tilstrekkelig immunitet","Høy effekt og lav SWR","Kort antenne og lang kabel","Skjerming og høy forsterkning"],"Utstrålingsstandarder setter grenser for støy. Immunitetsstandarder setter krav til hva utstyret skal tåle.");
 Q("emc","Hva er enheten for elektrisk feltstyrke?",["Volt per meter (V/m)","Watt per meter (W/m)","Ampere (A)","Tesla (T)"],"Feltstyrken avtar med avstanden fra antennen.");
-Q("emc","Hva skjer med feltstyrken når avstanden til antennen dobles (i fjernfeltet)?",["Den halveres","Den blir en fjerdedel","Den dobles","Den er uendret"],"Feltstyrken (V/m) er omvendt proporsjonal med avstanden. Effekttettheten avtar med kvadratet.");
+Q("emc","Hva skjer med feltstyrken når avstanden til antennen dobles (i fjernfeltet)?",["Den halveres","Den blir en fjerdedel","Den dobles","Den er uendret"],"Feltstyrken (V/m) er omvendt proporsjonal med avstanden. Effekttettheten avtar med kvadratet.",0,1);
 Q("emc","Naboens TV forstyrres når du sender. Hvor er det lurt å begynne?",["Sjekke at din egen stasjon er ren og at du ikke forstyrrer ditt eget utstyr","Øke effekten for å komme gjennom","Slutte å sende for godt","Kreve at naboen kjøper ny TV"],"Vis at installasjonen din er i orden. Ofte skyldes problemet at naboutstyret ikke er immunt nok, og det kan løses med filter.");
 Q("emc","Hva er vanligvis årsaken når lyd fra en sender høres i en stereoanlegg-høyttaler (audio-deteksjon)?",["RF plukkes opp i ledninger og likerettes i en transistor i forsterkeren","Senderens harmoniske ligger på FM-båndet","Feil i senderens lydfilter","For lav SWR"],"Løsningen er filtrering, f.eks. ferritt på høyttalerledninger og kondensatorer på inngangen.");
 Q("emc","Hva gjør en ferrittring tredd på en kabel?",["Demper fellesmodus RF-strøm på kabelen","Øker effekten","Fjerner likestrøm","Gjør kabelen balansert for lyd"],"Ferritten gir høy impedans for RF som går likt i begge lederne (fellesmodus).");
-Q("emc","Hvordan kan du redusere harmoniske fra senderen som forstyrrer andre?",["Lavpassfilter mellom sender og antenne","Høypassfilter på senderen","Ferritt på mikrofonkabelen","Lengre jordledning"],"Harmoniske ligger over sendefrekvensen og stoppes av et lavpassfilter.");
-Q("emc","Hvordan kan du beskytte en TV-mottaker mot sterke HF-signaler som kommer inn via antennekabelen?",["Høypassfilter i TV-ens antenneinngang","Lavpassfilter i TV-ens antenneinngang","Mer forsterkning i antenneforsterkeren","Kortere TV-antenne"],"HF ligger under TV-frekvensene, så et høypassfilter slipper TV gjennom og stopper HF.");
+Q("emc","Hvordan kan du redusere harmoniske fra senderen som forstyrrer andre?",["Lavpassfilter mellom sender og antenne","Høypassfilter på senderen","Ferritt på mikrofonkabelen","Lengre jordledning"],"Harmoniske ligger over sendefrekvensen og stoppes av et lavpassfilter.",0,1);
+Q("emc","Hvordan kan du beskytte en TV-mottaker mot sterke HF-signaler som kommer inn via antennekabelen?",["Høypassfilter i TV-ens antenneinngang","Lavpassfilter i TV-ens antenneinngang","Mer forsterkning i antenneforsterkeren","Kortere TV-antenne"],"HF ligger under TV-frekvensene, så et høypassfilter slipper TV gjennom og stopper HF.",0,1);
 Q("emc","Hva er kryssmodulasjon?",["Modulasjonen fra et sterkt uønsket signal overføres til det ønskede signalet","To stasjoner som sender samtidig på samme frekvens","Når sideband byttes","Når antennen er feilpolarisert"],"Det skjer i ulineære trinn i mottakeren, typisk når et kraftig signal er i nærheten.");
-Q("emc","Hva er intermodulasjon i en mottaker?",["To sterke signaler blandes og lager nye frekvenser som kan falle på ønsket frekvens","Støy fra lysnettet","Speilfrekvensen","AGC-svikt"],"Typiske produkter er 2f1 − f2. Bedre filtrering foran og en dempeledd (attenuator) hjelper.");
+Q("emc","Hva er intermodulasjon i en mottaker?",["To sterke signaler blandes og lager nye frekvenser som kan falle på ønsket frekvens","Støy fra lysnettet","Speilfrekvensen","AGC-svikt"],"Typiske produkter er 2f1 − f2. Bedre filtrering foran og en dempeledd (attenuator) hjelper.",0,1);
 Q("emc","Hvorfor bør antennen plasseres så langt unna hus og ledningsnett som mulig?",["For å redusere feltstyrken på naboens utstyr og støy i eget mottak","For å øke SWR","For å kunne bruke kortere kabel","Det har ingen betydning"],"Høy og fritt plassert antenne reduserer både forstyrrelser og mottatt støy.");
 Q("emc","Hva betyr avkobling i EMC-sammenheng?",["Kondensatorer som leder RF til jord på strøm- og signalledninger","Å koble fra antennen","Å slå av senderen","Å bruke en lengre kabel"],"Avkobling, filtrering og skjerming er de tre viktigste tiltakene.");
 Q("emc","Hva bør du gjøre hvis du har lekker RF i radiorommet (f.eks. «brent» lepper på mikrofonen)?",["Sjekke jording, balun og fellesmodusstrøm på koaksen","Øke effekten","Fjerne lavpassfilteret","Bruke tynnere koaks"],"Strøm på utsiden av koaksen gjør at kabelen stråler. En balun eller sperrebalun hjelper.");
 
-Q("mal","Hvordan kobles et amperemeter i en krets?",["I serie med lasten","I parallell med lasten","Over strømforsyningen","Mellom jord og chassis"],"Strømmen må gå gjennom instrumentet. Et amperemeter har derfor svært lav indre motstand.");
+Q("mal","Hvordan kobles et amperemeter i en krets?",["I serie med lasten","I parallell med lasten","Over strømforsyningen","Mellom jord og chassis"],"Strømmen må gå gjennom instrumentet. Et amperemeter har derfor svært lav indre motstand.",0,1);
 Q("mal","Hvordan kobles et voltmeter?",["I parallell med det du måler over","I serie med lasten","Bare til jord","Mellom to ulike kretser"],"Et voltmeter skal ha høy indre motstand slik at det ikke belaster kretsen.");
 Q("mal","Hvorfor skal et voltmeter ha høy indre motstand?",["For ikke å belaste kretsen og endre spenningen","For å tåle høy strøm","For å måle frekvens","For å få bedre oppløsning på displayet"],"Et voltmeter med lav motstand trekker strøm og viser for lav spenning.");
-Q("mal","Hva måler et SWR-meter?",["Forholdet mellom framgående og reflektert effekt (ståendebølgeforhold)","Senderens frekvens","Signalstyrke i dB over S9","Antennens forsterkning"],"SWR-meteret settes inn mellom sender og antenne (eller tuner).");
+Q("mal","Hva måler et SWR-meter?",["Forholdet mellom framgående og reflektert effekt (ståendebølgeforhold)","Senderens frekvens","Signalstyrke i dB over S9","Antennens forsterkning"],"SWR-meteret settes inn mellom sender og antenne (eller tuner).",0,1);
 Q("mal","Hva er en kunstantenne (dummy load)?",["En ikke-induktiv motstand (f.eks. 50 Ω) som tar opp sendereffekten uten å stråle","En liten antenne for innendørs bruk","En antenne uten balun","En målemottaker"],"Brukes ved justering og testing av senderen.");
 Q("mal","Hvilket instrument viser signaler i tidsplanet (spenning som funksjon av tid)?",["Oscilloskop","Spektrumanalysator","Frekvensteller","SWR-meter"],"Med oscilloskop kan du se bølgeform, f.eks. overmodulering eller forvrengning.");
 Q("mal","Hvilket instrument viser signaler i frekvensplanet og avslører harmoniske?",["Spektrumanalysator","Oscilloskop","Multimeter","Dreiespoleinstrument"],"En spektrumanalysator viser amplitude som funksjon av frekvens.");
 Q("mal","Hva brukes en frekvensteller til?",["Måle frekvensen til et signal nøyaktig","Måle effekt","Måle SWR","Måle motstand"],"Den teller antall perioder i en kjent tid, styrt av en stabil krystalloscillator.");
 Q("mal","Hva brukes en signalgenerator til?",["Lage testsignaler med kjent frekvens og nivå","Måle effekt","Telle frekvens","Måle impedans i kabel"],"Typisk bruk er testing og justering av mottakere.");
 Q("mal","Hva er et dreiespoleinstrument?",["Et analogt viserinstrument der strøm gjennom en spole i et magnetfelt gir utslag","En digital frekvensteller","En type SWR-bro","Et oscilloskop med spole"],"Utslaget er proporsjonalt med strømmen. Med shunt eller formotstand kan det måle større strømmer og spenninger.");
-Q("mal","Hvor mange ganger øker effekten ved +3 dB?",["2 ganger","3 ganger","10 ganger","1,5 ganger"],"3 dB ≈ dobling av effekt, 10 dB = 10 ganger, 20 dB = 100 ganger.",1);
+Q("mal","Hvor mange ganger øker effekten ved +3 dB?",["2 ganger","3 ganger","10 ganger","1,5 ganger"],"3 dB ≈ dobling av effekt, 10 dB = 10 ganger, 20 dB = 100 ganger.",1,1);
 Q("mal","Hvor mange ganger øker effekten ved +10 dB?",["10 ganger","3 ganger","100 ganger","2 ganger"],"dB = 10 × log(P2/P1). 10 dB tilsvarer en faktor 10.",1);
-Q("mal","Hvor mange ganger øker effekten ved +6 dB?",["4 ganger","6 ganger","2 ganger","3 ganger"],"6 dB = 3 dB + 3 dB = 2 × 2 = 4 ganger.",1);
+Q("mal","Hvor mange ganger øker effekten ved +6 dB?",["4 ganger","6 ganger","2 ganger","3 ganger"],"6 dB = 3 dB + 3 dB = 2 × 2 = 4 ganger.",1,1);
 Q("mal","Hvor mange ganger øker effekten ved +20 dB?",["100 ganger","20 ganger","10 ganger","40 ganger"],"20 dB = 10 dB + 10 dB = 10 × 10 = 100 ganger.",1);
-Q("mal","En forsterker gjør 5 W om til 50 W. Hva er forsterkningen i dB?",["10 dB","45 dB","3 dB","20 dB"],"50/5 = 10 ganger = 10 dB.",1);
-Q("mal","En sender gir 100 W, og kabelen har 3 dB tap. Hvor mye effekt kommer fram til antennen?",["50 W","97 W","33 W","25 W"],"−3 dB = halv effekt.",1);
-Q("mal","En forsterker har 13 dB forsterkning og et dempeledd på 3 dB etterpå. Hva er total forsterkning?",["10 dB","16 dB","39 dB","4,3 dB"],"dB legges sammen: 13 − 3 = 10 dB, altså 10 ganger.",1);
+Q("mal","En forsterker gjør 5 W om til 50 W. Hva er forsterkningen i dB?",["10 dB","45 dB","3 dB","20 dB"],"50/5 = 10 ganger = 10 dB.",1,1);
+Q("mal","En sender gir 100 W, og kabelen har 3 dB tap. Hvor mye effekt kommer fram til antennen?",["50 W","97 W","33 W","25 W"],"−3 dB = halv effekt.",1,1);
+Q("mal","En forsterker har 13 dB forsterkning og et dempeledd på 3 dB etterpå. Hva er total forsterkning?",["10 dB","16 dB","39 dB","4,3 dB"],"dB legges sammen: 13 − 3 = 10 dB, altså 10 ganger.",1,1);
 Q("mal","Hva betyr 0 dB?",["Ingen endring (forholdet er 1)","Ingen effekt","Uendelig demping","Halv effekt"],"0 dB betyr at inn og ut er like.");
 Q("mal","Hvor mye endres spenningen ved +6 dB?",["Den dobles","Den firedobles","Den øker 6 ganger","Den øker 1,4 ganger"],"For spenning er dB = 20 × log(U2/U1). En dobling av spenningen gir 6 dB (og fire ganger effekt).");
 Q("mal","Hvordan kan du kontrollere senderen for harmoniske?",["Med spektrumanalysator via dempeledd og dummy load","Med multimeter på antennekontakten","Med SWR-meter","Ved å lytte på mottakeren med antennen frakoblet"],"Bruk alltid dempeledd så du ikke ødelegger inngangen på analysatoren.");
@@ -571,32 +574,32 @@ Q("reg","Hva er IARU?",["Radioamatørenes internasjonale interesseorganisasjon",
 Q("reg","I hvilken ITU-region ligger Norge?",["Region 1","Region 2","Region 3","Norge er ikke med i noen region"],"Region 1 omfatter Europa, Afrika, Midtøsten og Nord-Asia. Region 2 er Amerika, Region 3 er Asia/Stillehavet.");
 Q("reg","Hvilken myndighet utsteder radioamatørlisens og kallesignal i Norge?",["Nasjonal kommunikasjonsmyndighet (Nkom)","NRRL","ITU","Statens vegvesen"],"Prøven arrangeres av NRRL med spørsmål utarbeidet av Nkom. Nkom fører også tilsyn med radioamatørene.");
 Q("reg","Hvilke lisensklasser finnes i den nye forskriften om radioamatørvirksomhet (2026)?",["Full lisens (HAREC klasse A) og begrenset lisens","Bare én lisensklasse","A, B og C","Teknisk lisens og HF-lisens"],"Begrenset lisens gjelder bare i Norge.");
-Q("reg","Hvilket prefiks brukes fra Svalbard og Bjørnøya?",["JW","JX","3Y","LA"],"JX brukes på Jan Mayen og 3Y på Bouvetøya, Peter I's øy og norske landområder i Antarktis.");
+Q("reg","Hvilket prefiks brukes fra Svalbard og Bjørnøya?",["JW","JX","3Y","LA"],"JX brukes på Jan Mayen og 3Y på Bouvetøya, Peter I's øy og norske landområder i Antarktis.",0,1);
 Q("reg","Hvilket prefiks brukes fra Jan Mayen?",["JX","JW","3Y","OY"],"OY er Færøyene.");
 Q("reg","Hvilken prefiksserie brukes fra det norske fastlandet?",["LA–LN","JW–JX","OH–OJ","SM–SM9"],"Kallesignalet består av prefiks, ett siffer og et suffiks, f.eks. LA1XYZ.");
-Q("reg","Når skal du oppgi kallesignalet ditt etter forskriften?",["Ved begynnelsen og slutten av sendingen og med korte mellomrom under sendingen","Bare ved begynnelsen","Bare når noen spør","Hvert 30. minutt"],"Det skal være fullstendig kallesignal, ikke bare de siste bokstavene.");
-Q("reg","Er det tillatt å sende krypterte meldinger på amatørbåndene?",["Nei, unntatt ved organisert krise- og redningssamband","Ja, alltid","Ja, men bare på HF","Ja, hvis du oppgir nøkkelen"],"Digital kommunikasjon skal bruke allment tilgjengelige protokoller, så innholdet kan leses av alle.");
-Q("reg","Hva er maksimal utgangseffekt for full lisens på 80, 40 og 20 m?",["1000 W","100 W","400 W","10 W"],"På primærbåndene på HF (bl.a. 3,5, 7, 14, 21 og 28 MHz) er grensen 1000 W PEP for full lisens.");
-Q("reg","Hva er maksimal utgangseffekt for full lisens på 2 m (144–146 MHz) ved vanlig drift?",["300 W","1000 W","100 W","50 W"],"1000 W tillates for EME og meteorscatter, med retningsantenne og logging av tid, asimut og elevasjon.");
-Q("reg","Hva er maksimal utgangseffekt for begrenset lisens på HF og 2 m?",["10 W","100 W","1 W","300 W"],"Begrenset lisens har 10 W på de båndene den gir tilgang til (lavere på 13 og 3 cm).");
+Q("reg","Når skal du oppgi kallesignalet ditt etter forskriften?",["Ved begynnelsen og slutten av sendingen og med korte mellomrom under sendingen","Bare ved begynnelsen","Bare når noen spør","Hvert 30. minutt"],"Det skal være fullstendig kallesignal, ikke bare de siste bokstavene.",0,1);
+Q("reg","Er det tillatt å sende krypterte meldinger på amatørbåndene?",["Nei, unntatt ved organisert krise- og redningssamband","Ja, alltid","Ja, men bare på HF","Ja, hvis du oppgir nøkkelen"],"Digital kommunikasjon skal bruke allment tilgjengelige protokoller, så innholdet kan leses av alle.",0,1);
+Q("reg","Hva er maksimal utgangseffekt for full lisens på 80, 40 og 20 m?",["1000 W","100 W","400 W","10 W"],"På primærbåndene på HF (bl.a. 3,5, 7, 14, 21 og 28 MHz) er grensen 1000 W PEP for full lisens.",0,1);
+Q("reg","Hva er maksimal utgangseffekt for full lisens på 2 m (144–146 MHz) ved vanlig drift?",["300 W","1000 W","100 W","50 W"],"1000 W tillates for EME og meteorscatter, med retningsantenne og logging av tid, asimut og elevasjon.",0,1);
+Q("reg","Hva er maksimal utgangseffekt for begrenset lisens på HF og 2 m?",["10 W","100 W","1 W","300 W"],"Begrenset lisens har 10 W på de båndene den gir tilgang til (lavere på 13 og 3 cm).",0,1);
 Q("reg","Hva sier forskriften dersom sendingen din forårsaker forstyrrelser?",["Utgangseffekten skal reduseres til maksimalt 100 W","Du må slutte å sende i ett år","Du må bytte bånd","Ingenting – du har rett til å sende"],"Dette står i § 7 i forskriften om radioamatørvirksomhet.");
-Q("reg","Hva betyr det at amatørtjenesten har sekundær status på et bånd?",["Du må ikke forstyrre primærbrukere og må tåle forstyrrelser fra dem","Du har førsterett på båndet","Du kan bare sende om natten","Du må bruke halv effekt"],"Hvis en primærbruker begynner å sende, må du stoppe og skifte frekvens.");
-Q("reg","Kan en person uten lisens sende på amatørbåndene?",["Ja, gjennom en klubb eller gruppe under fysisk tilstedeværelse og veiledning av en lisensiert radioamatør","Nei, aldri","Ja, hvis effekten er under 5 W","Ja, men bare på 2 m"],"Klubbens kallesignal eller veilederens kallesignal brukes, og veilederen er ansvarlig.");
+Q("reg","Hva betyr det at amatørtjenesten har sekundær status på et bånd?",["Du må ikke forstyrre primærbrukere og må tåle forstyrrelser fra dem","Du har førsterett på båndet","Du kan bare sende om natten","Du må bruke halv effekt"],"Hvis en primærbruker begynner å sende, må du stoppe og skifte frekvens.",0,1);
+Q("reg","Kan en person uten lisens sende på amatørbåndene?",["Ja, gjennom en klubb eller gruppe under fysisk tilstedeværelse og veiledning av en lisensiert radioamatør","Nei, aldri","Ja, hvis effekten er under 5 W","Ja, men bare på 2 m"],"Klubbens kallesignal eller veilederens kallesignal brukes, og veilederen er ansvarlig.",0,1);
 Q("reg","Er det lov å sende fra en drone på amatørfrekvensene?",["Nei, med unntak for organisert krise- og redningssamband og svak telemetri","Ja, uten begrensninger","Ja, med maks 1000 W","Bare på 160 m"],"Telemetri (trykk, temperatur, posisjon) for eksperimenter er tillatt med maks 100 mW e.i.r.p.");
 Q("reg","Hva er formålet med amatørtjenesten ifølge ITU?",["Egentrening, samband og tekniske undersøkelser uten økonomisk interesse","Kommersiell kringkasting","Mobiltelefoni","Militært samband"],"Kommunikasjonen skal være knyttet til dette formålet og til kommentarer av personlig karakter.");
 Q("reg","Når kan amatørstasjoner sende internasjonal trafikk på vegne av tredjeparter?",["Ved nød og katastrofehjelp","Alltid","Når det betales for det","Aldri, uansett"],"Dette står i ITUs radioreglement artikkel 25.");
 Q("reg","Hva er CEPT-lisensen (T/R 61-01)?",["Lar deg sende ved korte besøk i andre CEPT-land uten egen lisens der","En lisens for kommersiell bruk","En spesiallisens for satellitter","Et diplom for 100 land"],"Du bruker besøkslandets prefiks foran eget kallesignal, f.eks. DL/LA1XYZ i Tyskland. Reglene i besøkslandet gjelder.");
-Q("reg","Hvordan skal LA1XYZ skrive kallesignalet sitt ved sending fra Tyskland med CEPT-lisens?",["DL/LA1XYZ","LA1XYZ/DL","LA1XYZ/P","DL1XYZ"],"Besøkslandets prefiks settes foran, skilt med skråstrek (sies «strek» på telefoni).");
+Q("reg","Hvordan skal LA1XYZ skrive kallesignalet sitt ved sending fra Tyskland med CEPT-lisens?",["DL/LA1XYZ","LA1XYZ/DL","LA1XYZ/P","DL1XYZ"],"Besøkslandets prefiks settes foran, skilt med skråstrek (sies «strek» på telefoni).",0,1);
 Q("reg","Hva er HAREC (SHARE, T/R 61-02)?",["Sertifikat som gir rett til lisens uten ny prøve når man flytter til et annet land","En lisens for 3 måneders besøk","En kontest-regel","En båndplan"],"Pensum for den norske lisensprøven følger HAREC.");
 Q("reg","Hva betyr /M etter kallesignalet?",["Mobil operasjon fra bil eller annet landkjøretøy","Maritim mobil (båt)","Fra fly","Midlertidig adresse"],"/MM = fra båt (maritim mobil), /AM = fra luftfartøy, /P = portabel.");
-Q("reg","Hva betyr /P etter kallesignalet?",["Portabel – stasjonen bæres og drives ikke fra strømnettet","Privat","Primær status","Fra hytta med fast antenne"],"Er du på hytta med fast antenne og nettstrøm, er du ikke portabel.");
+Q("reg","Hva betyr /P etter kallesignalet?",["Portabel – stasjonen bæres og drives ikke fra strømnettet","Privat","Primær status","Fra hytta med fast antenne"],"Er du på hytta med fast antenne og nettstrøm, er du ikke portabel.",0,1);
 Q("reg","Hva betyr /MM etter kallesignalet?",["Maritim mobil – fra fartøy","Mobil i bil","Midlertidig mast","Morse-modus"],"/MM brukes også når båten ligger til ankers eller ved kai.");
 Q("reg","Hva er en båndplan?",["IARUs inndeling av et bånd etter modus og bruk","En liste over kallesignaler","Tidsplan for kontester","Kart over repeatere"],"Båndplanene er veiledende, men det regnes som dårlig amatørskikk ikke å følge dem.");
-Q("reg","Hva er nødanropet på telefoni?",["MAYDAY","SOS SOS SOS","PAN PAN","SECURITE"],"På telegrafi er nødsignalet SOS (···−−−···). Nødtrafikk har alltid forrang.");
+Q("reg","Hva er nødanropet på telefoni?",["MAYDAY","SOS SOS SOS","PAN PAN","SECURITE"],"På telegrafi er nødsignalet SOS (···−−−···). Nødtrafikk har alltid forrang.",0,1);
 Q("reg","Hva er nødsignalet på telegrafi (morse)?",["SOS (···−−−···)","MAYDAY","CQD","QRT"],"Det sendes som ett sammenhengende tegn.");
 Q("reg","Hva gjør du hvis du hører et nødanrop?",["Lytter, noterer og hjelper uten å forstyrre trafikken","Sender CQ på samme frekvens","Skifter frekvens og ignorerer det","Øker effekten for å overdøve det"],"Under nød- og beredskapstrafikk viker alle andre enn de som er involvert.");
 Q("reg","Hvilken frekvens er senter for nødtrafikk på 80 m i IARU Region 1?",["3760 kHz","3500 kHz","3690 kHz","3800 kHz"],"Dette står i IARU-båndplanen for 80 m.");
-Q("reg","Hva bør du gjøre før du sender CQ på en frekvens?",["Lytte og spørre om frekvensen er i bruk","Sende med full effekt","Sende en lang testtone","Ingenting, alle har lik rett"],"Du kan ligge i skip-sonen til en stasjon som er i QSO. Spør «Er denne frekvensen i bruk?» eller QRL?");
+Q("reg","Hva bør du gjøre før du sender CQ på en frekvens?",["Lytte og spørre om frekvensen er i bruk","Sende med full effekt","Sende en lang testtone","Ingenting, alle har lik rett"],"Du kan ligge i skip-sonen til en stasjon som er i QSO. Spør «Er denne frekvensen i bruk?» eller QRL?",0,1);
 Q("reg","Hva er minimumskravet til en godkjent QSO ifølge IARU Region 1?",["Begge har mottatt motpartens fulle kallesignal og signalrapport, og fått bekreftet sitt eget","Bare at man har hørt den andre","At man har utvekslet QSL-kort","At samtalen varer minst 5 minutter"],"I kontester utveksles i tillegg en testmelding, f.eks. et serienummer.");
 Q("reg","Hva er «halekalling» (tail-ending) i en pile-up?",["Å kalle helt i slutten av en annen stasjons sending for å komme foran","Å avslutte med 73","Å svare på et CQ-anrop","Å sende kallesignalet to ganger"],"Det regnes som dårlig oppførsel fordi det forstyrrer og forsinker for alle.");
 Q("reg","Hvem har rett til å bli værende på frekvensen når en QSO avsluttes?",["Den som hadde frekvensen først (som kalte CQ)","Den som har sterkest signal","Den yngste operatøren","Den som har høyest lisensklasse"],"Ingen har prioritet på en frekvens i normal trafikk, men den som hadde den først beholder den.");
@@ -604,24 +607,24 @@ Q("reg","Hva er vanlig praksis etter at du har fått kontakt på en kallefrekven
 Q("reg","Hvem bør få prioritet på en repeater?",["Mobile brukere","Stasjoner med høyest effekt","Den som har snakket lengst","Den som eier radioen"],"Repeatere ble satt opp for å øke rekkevidden for mobile brukere. Ta pauser mellom vekslingene.");
 Q("reg","Hvorfor bruker en repeater to frekvenser?",["Den lytter på én og sender på en annen samtidig","For å sende i stereo","For å kunne bruke SSB","For å spare strøm"],"Forskjellen kalles skift (offset). Ofte kreves en tone (subtone/1750 Hz) for å åpne repeateren.");
 Q("reg","Hva er et QSL-kort?",["Skriftlig bekreftelse på en radioforbindelse","Et kort som viser lisensklassen","Et kart over repeatere","En liste over Q-koder"],"QSL-kort brukes som dokumentasjon for diplomer. LoTW og eQSL er elektroniske varianter.");
-Q("reg","Hva skal minst stå på et QSL-kort for at det skal bekrefte en QSO?",["Kallesignaler, dato, tid (UTC), frekvens/bånd, modus og rapport","Bare navn og adresse","Bare kallesignalet ditt","Værmelding og QTH"],"Tid oppgis i UTC slik at loggene kan sammenliknes.");
+Q("reg","Hva skal minst stå på et QSL-kort for at det skal bekrefte en QSO?",["Kallesignaler, dato, tid (UTC), frekvens/bånd, modus og rapport","Bare navn og adresse","Bare kallesignalet ditt","Værmelding og QTH"],"Tid oppgis i UTC slik at loggene kan sammenliknes.",0,1);
 Q("reg","Hvilken tid brukes i loggen og på QSL-kort?",["UTC","Norsk lokal tid","Sommertid","Tiden i motpartens land"],"UTC kalles også Zulu (Z), f.eks. 1600Z.");
 Q("reg","Hvordan anroper du i en kontest?",["Oppgir eget kallesignal én gang","Sier hele CQ-teksten tre ganger","Oppgir begge kallesignaler og navn","Sender bare signalrapporten"],"Den anropte stasjonen svarer med ditt kallesignal, rapport og testmelding.");
 Q("reg","Hva er et alminnelig anrop?",["CQ – anrop til alle stasjoner","Anrop til en bestemt stasjon","Nødanrop","Anrop til nettkontroll"],"F.eks. «CQ CQ CQ dette er LA1XYZ». «CQ DX» betyr at du ønsker langdistansekontakter.");
-Q("reg","Hva betyr «CQ DX»?",["Anrop som søker langdistanseforbindelser","Anrop til danske stasjoner","Nødanrop","Testsending"],"Hvis anropet er rettet mot et bestemt område som ikke er ditt, skal du ikke svare.");
+Q("reg","Hva betyr «CQ DX»?",["Anrop som søker langdistanseforbindelser","Anrop til danske stasjoner","Nødanrop","Testsending"],"Hvis anropet er rettet mot et bestemt område som ikke er ditt, skal du ikke svare.",0,1);
 Q("reg","Hva betyr KN på slutten av en CW-sending?",["Over, bare til den stasjonen jeg har kontakt med","Slutt på kontakten","Jeg stenger stasjonen","Alle kan svare"],"K = over til hvem som helst, KN = bare den angitte stasjonen, SK = slutt på kontakten, CL = stenger stasjonen.");
-Q("reg","Hva betyr signalrapporten 59 på telefoni?",["Perfekt lesbar, svært sterkt signal","Dårlig lesbarhet, sterkt signal","Perfekt lesbar, svakt signal","Fem stasjoner, ni minutter"],"R = lesbarhet (1–5), S = styrke (1–9). T (tone, 1–9) brukes bare på CW og digitalt.");
+Q("reg","Hva betyr signalrapporten 59 på telefoni?",["Perfekt lesbar, svært sterkt signal","Dårlig lesbarhet, sterkt signal","Perfekt lesbar, svakt signal","Fem stasjoner, ni minutter"],"R = lesbarhet (1–5), S = styrke (1–9). T (tone, 1–9) brukes bare på CW og digitalt.",0,1);
 Q("reg","Hva betyr T i RST-rapporten 599?",["Tonekvaliteten på CW-signalet","Tiden i UTC","Temperatur","Antall timer"],"T brukes ikke på telefoni. 9 betyr perfekt tone.");
 Q("reg","Hvor mange dB tilsvarer ett S-trinn på S-meteret?",["6 dB","3 dB","10 dB","1 dB"],"S9 på HF er −73 dBm (50 µV på 50 Ω). S8 er 6 dB svakere.");
 Q("reg","Hva betyr 5NN i en kontest på CW?",["599","Dårlig signal","Ingen rapport","Serienummer 500"],"N er raskere å sende enn 9 i morse, så 599 forkortes ofte til 5NN.");
 
-Q("sik","Hvilken strømvei gjennom kroppen er farligst?",["Fra hånd til hånd gjennom brystet","Fra fot til fot","Gjennom én finger","Fra albue til hånd på samme arm"],"Strøm gjennom brystkassen kan påvirke hjertet. Arbeid gjerne med én hånd når det er spenning i utstyret.");
-Q("sik","Omtrent hvor stor strøm gjennom kroppen kan gi hjerteflimmer?",["Ca. 75 mA","Ca. 1 A","Ca. 1 mA","Ca. 10 A"],"Det trengs langt mindre enn 1 A for å stoppe hjertet. En sikring ryker ikke før det er for sent.");
-Q("sik","Ved hvor stor lekkasjestrøm løser en vanlig jordfeilbryter ut?",["30 mA","300 mA","3 A","16 A"],"Jordfeilbryteren beskytter mennesker ved å bryte strømmen før strømmen blir dødelig.");
+Q("sik","Hvilken strømvei gjennom kroppen er farligst?",["Fra hånd til hånd gjennom brystet","Fra fot til fot","Gjennom én finger","Fra albue til hånd på samme arm"],"Strøm gjennom brystkassen kan påvirke hjertet. Arbeid gjerne med én hånd når det er spenning i utstyret.",0,1);
+Q("sik","Omtrent hvor stor strøm gjennom kroppen kan gi hjerteflimmer?",["Ca. 75 mA","Ca. 1 A","Ca. 1 mA","Ca. 10 A"],"Det trengs langt mindre enn 1 A for å stoppe hjertet. En sikring ryker ikke før det er for sent.",0,1);
+Q("sik","Ved hvor stor lekkasjestrøm løser en vanlig jordfeilbryter ut?",["30 mA","300 mA","3 A","16 A"],"Jordfeilbryteren beskytter mennesker ved å bryte strømmen før strømmen blir dødelig.",0,1);
 Q("sik","Hva er det viktigste før du åpner et apparat med nettspenning?",["Trekke ut støpselet og lade ut kondensatorer","Slå av bryteren foran og sette i gang","Ta på antistatisk armbånd og jobbe med begge hender","Tilkoble en lengre jordledning"],"Glattekondensatorer kan holde på en farlig ladning lenge etter at strømmen er slått av.");
 Q("sik","Hva bør alle i huset vite om radiorommet?",["Hvor hovedbryteren er og hvordan man slår av strømmen","Hvilken frekvens du bruker","Kallesignalet ditt","Hvilken antenne du har"],"Da kan noen slå av strømmen raskt hvis det skjer en ulykke.");
 Q("sik","Hva må du tenke på når du setter opp en mast eller høy antenne?",["Holde god avstand til kraftlinjer, så den ikke kan treffe dem hvis den faller","At den er så høy som mulig uansett plassering","At den peker mot naboens hus","At koaksen er så lang som mulig"],"Kontakt med høyspentlinjer er livsfarlig. Avstanden må være større enn antennens høyde.");
-Q("sik","Hva er tryggest å gjøre med antennene når et tordenvær nærmer seg?",["Koble fra antennekablene fra radioen","Sende med full effekt","Sette seg nær masten","Jorde radioen via vannrøret og fortsette å sende"],"Du kan ikke beskytte deg 100 % mot direkte nedslag, men frakobling beskytter utstyret mot statiske utladninger.");
+Q("sik","Hva er tryggest å gjøre med antennene når et tordenvær nærmer seg?",["Koble fra antennekablene fra radioen","Sende med full effekt","Sette seg nær masten","Jorde radioen via vannrøret og fortsette å sende"],"Du kan ikke beskytte deg 100 % mot direkte nedslag, men frakobling beskytter utstyret mot statiske utladninger.",0,1);
 Q("sik","Hva er den eneste påviste biologiske virkningen av RF-stråling?",["Oppvarming av vev","Ioniserende skader på DNA","Magnetisering av blodet","Hørselstap"],"Grenseverdiene fra ICNIRP har store sikkerhetsmarginer.");
 Q("sik","Hvilken kroppsdel er særlig sårbar for høy RF-feltstyrke, f.eks. foran en mikrobølgeantenne?",["Øynene","Fingrene","Føttene","Håret"],"Øyevev blir lett varmet opp. Se aldri inn i en aktiv mikrobølgeantenne eller foran en UHF-retningsantenne som sender.");
 Q("sik","Hvorfor bør radioen i bilen ha sikring på pluss-ledningen nær batteriet?",["For å beskytte mot brann ved kortslutning","For å bedre radiomottaket","For å redusere støy","For å kunne slå av radioen"],"Sikring også på minusledningen beskytter hvis bilens jordforbindelse ryker.");
@@ -630,25 +633,25 @@ Q("sik","Utstyret ditt trekker 5 A. Hvilken sikring passer best?",["En som er ti
 Q("sik","Hvorfor bør du ikke bruke hodetelefoner når du jobber inne i et påslått apparat?",["En plutselig lyd kan skremme deg slik at du berører noe farlig","Det gir støy i mottakeren","Det ødelegger hodetelefonene","Det gir feil SWR"],"Fjern også ringer og klokker, og bruk isolert verktøy.");
 Q("sik","Hva skal du ikke bruke når du jobber på utstyr med høy spenning?",["Antistatisk armbånd koblet til jord","Isolert verktøy","Én hånd","Gummimatte"],"Armbåndet gir en vei til jord gjennom kroppen. Det er for statisk-følsomme komponenter, ikke for høyspent.");
 
-Q("kod","Hva betyr Q-koden QTH?",["Min posisjon (hvor jeg er)","Klokken er","Stans sendingen","Hvem kaller meg?"],"Huskeregel: H = Hjemsted.");
-Q("kod","Hva betyr QRM?",["Forstyrrelser fra andre stasjoner","Atmosfærisk støy","Signalstyrken varierer","Send langsommere"],"M = mennesker. QRN er naturlig, atmosfærisk støy.");
-Q("kod","Hva betyr QRN?",["Atmosfærisk støy","Forstyrrelser fra andre stasjoner","Skift frekvens","Er du klar?"],"N = natur, f.eks. tordenvær.");
-Q("kod","Hva betyr QSB?",["Signalstyrken varierer (fading)","Signalene er forvrengte","Send fortere","Bekreft mottak"],"B = bølger: signalet går opp og ned.");
-Q("kod","Hva betyr QSY?",["Skift frekvens","Stans sendingen","Hva er min frekvens?","Øk effekten"],"F.eks. «QSY 14200 kHz».");
-Q("kod","Hva betyr QRT?",["Stans sendingen","Send fortere","Jeg er klar","Hvem kaller meg?"],"Brukes ofte når man avslutter og slår av stasjonen.");
-Q("kod","Hva betyr QRZ?",["Hvem kaller meg?","Er du opptatt?","Hva er din posisjon?","Når vil du kalle igjen?"],"Brukes når du hører at noen kaller, men ikke får med deg kallesignalet.");
-Q("kod","Hva betyr QRP?",["Minsk sendereffekten / lav effekt","Øk sendereffekten","Send langsommere","Jeg har ingenting til deg"],"QRP-drift betyr å sende med lav effekt, typisk 5 W eller mindre.");
+Q("kod","Hva betyr Q-koden QTH?",["Min posisjon (hvor jeg er)","Klokken er","Stans sendingen","Hvem kaller meg?"],"Huskeregel: H = Hjemsted.",0,1);
+Q("kod","Hva betyr QRM?",["Forstyrrelser fra andre stasjoner","Atmosfærisk støy","Signalstyrken varierer","Send langsommere"],"M = mennesker. QRN er naturlig, atmosfærisk støy.",0,1);
+Q("kod","Hva betyr QRN?",["Atmosfærisk støy","Forstyrrelser fra andre stasjoner","Skift frekvens","Er du klar?"],"N = natur, f.eks. tordenvær.",0,1);
+Q("kod","Hva betyr QSB?",["Signalstyrken varierer (fading)","Signalene er forvrengte","Send fortere","Bekreft mottak"],"B = bølger: signalet går opp og ned.",0,1);
+Q("kod","Hva betyr QSY?",["Skift frekvens","Stans sendingen","Hva er min frekvens?","Øk effekten"],"F.eks. «QSY 14200 kHz».",0,1);
+Q("kod","Hva betyr QRT?",["Stans sendingen","Send fortere","Jeg er klar","Hvem kaller meg?"],"Brukes ofte når man avslutter og slår av stasjonen.",0,1);
+Q("kod","Hva betyr QRZ?",["Hvem kaller meg?","Er du opptatt?","Hva er din posisjon?","Når vil du kalle igjen?"],"Brukes når du hører at noen kaller, men ikke får med deg kallesignalet.",0,1);
+Q("kod","Hva betyr QRP?",["Minsk sendereffekten / lav effekt","Øk sendereffekten","Send langsommere","Jeg har ingenting til deg"],"QRP-drift betyr å sende med lav effekt, typisk 5 W eller mindre.",0,1);
 Q("kod","Hva betyr QRO?",["Øk sendereffekten / høy effekt","Minsk sendereffekten","Bekreft mottak","Skift frekvens"],"QRO og QRP er motsetninger.");
-Q("kod","Hva betyr QSL?",["Jeg kvitterer for mottakingen","Jeg er opptatt","Signalstyrken varierer","Send hvert ord to ganger"],"QSL-kortet er den skriftlige kvitteringen for en forbindelse.");
-Q("kod","Hva betyr QSO?",["En forbindelse (samtale) mellom to stasjoner","Videresending av melding","Lytt på en annen frekvens","Hvor mange meldinger har du?"],"«Kan du opprette forbindelse med …?»");
-Q("kod","Hva betyr QRL?",["Er du opptatt? / Jeg er opptatt","Hvem kaller meg?","Send langsommere","Varierer frekvensen min?"],"Mange sender «QRL?» for å sjekke om frekvensen er ledig.");
-Q("kod","Hva betyr QRS?",["Send langsommere","Send fortere","Stans sendingen","Skift frekvens"],"S = sakte. QRQ = send fortere.");
-Q("kod","Hva betyr QRV?",["Jeg er klar","Jeg er opptatt","Jeg stanser","Jeg har ingenting til deg"],"Brukes også om å være aktiv på et bånd, f.eks. «QRV på 2 m».");
+Q("kod","Hva betyr QSL?",["Jeg kvitterer for mottakingen","Jeg er opptatt","Signalstyrken varierer","Send hvert ord to ganger"],"QSL-kortet er den skriftlige kvitteringen for en forbindelse.",0,1);
+Q("kod","Hva betyr QSO?",["En forbindelse (samtale) mellom to stasjoner","Videresending av melding","Lytt på en annen frekvens","Hvor mange meldinger har du?"],"«Kan du opprette forbindelse med …?»",0,1);
+Q("kod","Hva betyr QRL?",["Er du opptatt? / Jeg er opptatt","Hvem kaller meg?","Send langsommere","Varierer frekvensen min?"],"Mange sender «QRL?» for å sjekke om frekvensen er ledig.",0,1);
+Q("kod","Hva betyr QRS?",["Send langsommere","Send fortere","Stans sendingen","Skift frekvens"],"S = sakte. QRQ = send fortere.",0,1);
+Q("kod","Hva betyr QRV?",["Jeg er klar","Jeg er opptatt","Jeg stanser","Jeg har ingenting til deg"],"Brukes også om å være aktiv på et bånd, f.eks. «QRV på 2 m».",0,1);
 Q("kod","Hva betyr QRX?",["Jeg kaller deg igjen kl. … / vent litt","Hvem kaller meg?","Stans sendingen","Jeg er klar"],"I praksis betyr QRX ofte bare «vent litt».");
-Q("kod","Hvilken Q-kode spør «Hva er min frekvens?»",["QRG","QSY","QRH","QSX"],"QRH = varierer frekvensen min? QSY = skift frekvens.");
+Q("kod","Hvilken Q-kode spør «Hva er min frekvens?»",["QRG","QSY","QRH","QSX"],"QRH = varierer frekvensen min? QSY = skift frekvens.",0,1);
 Q("kod","Hvilken Q-kode betyr «Kan du høre meg mellom dine signaler (break-in)?»",["QSK","QSL","QSO","QRK"],"Brukes særlig på CW (full break-in).");
 Q("kod","Hva betyr den uoffisielle koden QST?",["Sending til alle (radioamatører)","Hvor mye er klokken?","Skift frekvens","Stans sendingen"],"QST-LA = sending til alle norske radioamatører.");
-Q("kod","Hvordan bokstaveres kallesignalet LA9K fonetisk?",["Lima Alfa Nine Kilo","Ludvig Adam Ni Karl","London Amsterdam Ni Kilo","Love Able Nine King"],"Radioamatører bruker ITU/NATO-alfabetet: Alfa, Bravo, Charlie …");
+Q("kod","Hvordan bokstaveres kallesignalet LA9K fonetisk?",["Lima Alfa Nine Kilo","Ludvig Adam Ni Karl","London Amsterdam Ni Kilo","Love Able Nine King"],"Radioamatører bruker ITU/NATO-alfabetet: Alfa, Bravo, Charlie …",0,1);
 Q("kod","Hva er det fonetiske ordet for bokstaven Q?",["Quebec","Queen","Quick","Quatro"],"Q = Quebec, uttales «keh-BECK».");
 Q("kod","Hva er det fonetiske ordet for bokstaven Ø i det norske tillegget?",["Ørnulf","Østen","Øyvind","Ølen"],"Æ = Ægir, Ø = Ørnulf, Å = Ågot.");
 Q("kod","Hva er det fonetiske ordet for bokstaven J?",["Juliett","Johan","Jupiter","Jakob"],"J = Juliett.");
@@ -659,13 +662,40 @@ Q("kod","Hva betyr forkortelsen DE?",["Fra","Til","Og","Det"],"F.eks. «W1AW DE 
 Q("kod","Hva betyr forkortelsen TVI?",["Forstyrrelser på fjernsyn","Sendetid","Testsending","Tone, volum, intensitet"],"BCI = forstyrrelser på kringkasting.");
 Q("kod","Hva betyr forkortelsen YL?",["Kvinnelig radioamatør","Ung lytter","Gammel radioamatør","Ektefelle (mann)"],"XYL = kone, OM = radioamatør/mann, OT = erfaren radioamatør.");
 Q("kod","Hva betyr forkortelsen SWL?",["Kortbølgelytter","Ståendebølgeforhold","Svakt signal","Stasjon med lav effekt"],"SWL = Short Wave Listener. SWR = ståendebølgeforhold.");
+// Prøvenære spørsmål laget etter temaene i Nkoms eksempelprøve (egne formuleringer og tall).
+Q("el","En spole på 300 µH står i serie med to parallellkoblede spoler på 600 µH hver. Hva er total induktans (ingen kobling mellom spolene)?",["600 µH","1500 µH","900 µH","200 µH"],"De to parallelle 600 µH gir 300 µH. I serie med 300 µH blir det 300 + 300 = 600 µH. Spoler regnes som motstander.",1,1);
+Q("el","En spole på 20 µH skal gå i resonans på 3,5 MHz. Omtrent hvor stor kondensator trengs?",["Ca. 100 pF","Ca. 1 nF","Ca. 10 pF","Ca. 1 µF"],"C = 1 / (4π² f² L) = 1 / (39,5 × 12,25·10¹² × 20·10⁻⁶) ≈ 1,0·10⁻¹⁰ F = ca. 100 pF.",1,1);
+Q("el","Hvilken komponent har mest å si for Q-verdien i en avstemt LC-krets?",["Tapsmotstanden i spolen","Kondensatorens arbeidsspenning","Fargen på spoletråden","Kondensatorens fysiske størrelse"],"Q = XL / R. Lav motstand i spolen gir høy Q. Kondensatorer har svært små tap og regnes nesten som perfekte.",0,1);
+Q("el","Hvordan oppfører en serieresonanskrets seg på en frekvens over resonansfrekvensen?",["Induktivt","Kapasitivt","Rent resistivt","Som en kortslutning"],"Over resonans er XL større enn XC, så kretsen blir induktiv. Under resonans blir den kapasitiv.",0,1);
+Q("el","Hvordan oppfører en parallellresonanskrets seg på en frekvens over resonansfrekvensen?",["Kapasitivt","Induktivt","Rent resistivt","Som en åpen krets"],"I parallell går mest strøm gjennom komponenten med lavest reaktans. Over resonans er det kondensatoren, så kretsen blir kapasitiv.",0,1);
+Q("hl","Én av diodene i en brolikeretter brenner av og blir en åpen krets. Hva skjer?",["Den blir en halvbølgelikeretter med mer rippel og lavere spenning under last","Utgangsspenningen dobles","Strømforsyningen gir ren likespenning","Utgangen blir vekselspenning med dobbel frekvens"],"Bare den ene halvperioden blir likerettet, så glattekondensatoren lades halvparten så ofte.",0,1);
+Q("hl","En transistor har signalet inn på basis og ut fra kollektor, med emitteren felles. Hva kjennetegner koblingen?",["Både strøm- og spenningsforsterkning, og signalet fasevendes","Ingen spenningsforsterkning og ingen fasevending","Bare strømforsterkning, svært lav utgangsimpedans","Lav inngangsimpedans på ca. 50 Ω og ingen strømforsterkning"],"Dette er felles emitter, den vanligste forsterkerkoblingen.",0,1);
+Q("hl","Hva kjennetegner et sluttrinn i klasse AB?",["Lineært nok for SSB og bedre virkningsgrad enn klasse A","Leder bare en liten del av perioden og passer bare for CW og FM","Leder hele perioden og har dårligst virkningsgrad","Kan ikke brukes i push-pull"],"Klasse AB er vanlig i SSB-sendere fordi det er et godt kompromiss mellom linearitet og virkningsgrad.",0,1);
+Q("tx","Hvordan lages et SSB-signal i en filtertype sender?",["En balansert (ring-)modulator fjerner bærebølgen, og et filter fjerner det ene sidebåndet","En diode likeretter AM-signalet","Frekvensen varieres med en varicapdiode","Bærebølgen slås av og på med morsenøkkelen"],"Hvilket sidebånd (USB eller LSB) du får, avgjøres av filteret eller av frekvensen på bærebølgeoscillatoren.",0,1);
+Q("tx","Hvilken rekkefølge er riktig, fra smalest til bredest båndbredde?",["CW – SSB – AM (DSB) – FM","SSB – CW – FM – AM","AM – SSB – CW – FM","FM – AM – SSB – CW"],"Typisk: CW ca. 100–500 Hz, SSB ca. 2,7 kHz, AM ca. 6 kHz, FM ca. 12–16 kHz.",0,1);
+Q("tx","Hvordan skal effektgrensen på 1000 W i forskriften måles?",["Som PEP der antennen kobles til senderens siste trinn","Som utstrålt effekt fra antennen (e.i.r.p.)","Som effekten strømforsyningen trekker fra nettet","Som gjennomsnitt over en hel time"],"Antenneforsterkning og kabeltap teller ikke med i denne grensen.",0,1);
+Q("tx","Du har en PA med 13 dB forsterkning og vil sende på 20 m med full lisens. Hvor mye effekt kan du maksimalt sende inn i PA-en?",["50 W","100 W","77 W","20 W"],"13 dB ≈ 20 ganger. Maks 1000 W ut betyr maks 1000 / 20 = 50 W inn. Antennens forsterkning har ingenting å si for grensen.",1,1);
+Q("rx","Hva bestemmer først og fremst båndbredden (passbåndet) i en superheterodynmottaker?",["Filteret i mellomfrekvensen","Antennelengden","Lavfrekvensforsterkeren","AGC-kretsen"],"Det meste av selektiviteten skapes av MF-filteret, ofte et krystallfilter.",0,1);
+Q("rx","Hva bestemmer først og fremst frekvensstabiliteten i en mottaker?",["Stabiliteten til oscillatorene (lokaloscillator og BFO)","Antennens SWR","Høyttaleren","MF-forsterkerens forsterkning"],"Driver lokaloscillatoren, flytter mottakeren seg bort fra stasjonen.",0,1);
+Q("ant","En kvartbølgeantenne er 2,5 m lang (forkortningsfaktor 0,95). Hvilket bånd passer den best for?",["10 m (28 MHz)","20 m (14 MHz)","6 m (50 MHz)","2 m (144 MHz)"],"λ = 2,5 / 0,95 × 4 ≈ 10,5 m. f = 300 / 10,5 ≈ 28,5 MHz.",1,1);
+Q("ant","Hvorfor bør du velge en ledig frekvens når du justerer antennetuneren?",["Fordi du sender et signal mens du justerer","Fordi tuneren bare virker på ledige frekvenser","Fordi SWR-meteret ellers viser feil","Det spiller ingen rolle"],"Bruk lav effekt, og gjerne kunstantenne der det passer, så du ikke forstyrrer andre.",0,1);
+Q("mal","Du vil utvide et amperemeter som viser maks 1 A, slik at det kan måle 10 A. Hva gjør du?",["Kobler en liten motstand (shunt) i parallell med instrumentet","Kobler en stor motstand i serie med instrumentet","Kobler en kondensator i parallell","Kobler en diode i serie"],"Shunten tar 9 A, instrumentet 1 A. Shuntens motstand blir 1/9 av instrumentets indre motstand.",0,1);
+Q("mal","Du vil bruke et instrument som viser maks 1 mA (indre motstand 100 Ω) som voltmeter for 10 V. Hva trenger du?",["En formotstand i serie på ca. 9,9 kΩ","En shunt i parallell på ca. 0,1 Ω","En formotstand i serie på ca. 100 Ω","En shunt i parallell på ca. 10 kΩ"],"Total motstand = 10 V / 1 mA = 10 kΩ. Minus 100 Ω i instrumentet gir 9,9 kΩ i serie.",1,1);
+Q("reg","Hvilken av disse frekvensene kan du sende på med full lisens?",["21 430 kHz","3850 kHz","7430 kHz","10 250 kHz"],"Båndene er bl.a. 3500–3800 kHz, 7000–7200 kHz, 10 100–10 150 kHz og 21 000–21 450 kHz.",0,1);
+Q("reg","Hvilken av disse frekvensene ligger utenfor amatørbåndene?",["14 400 kHz","14 300 kHz","18 100 kHz","28 500 kHz"],"20 m går fra 14 000 til 14 350 kHz.",0,1);
+Q("reg","Du sender LSB med 2,4 kHz båndbredde og stiller radioen på 3501 kHz. Er det lovlig?",["Nei, nedre sidebånd havner under 3500 kHz, altså utenfor båndet","Ja, så lenge visningen er innenfor båndet","Ja, LSB brukes alltid på 80 m","Nei, SSB er ikke tillatt på 80 m"],"LSB ligger under den viste (undertrykte bærebølge-)frekvensen: 3501 − 2,4 = 3498,6 kHz.",1,1);
+Q("reg","Kan du bruke amatørradioen din til å sende på frekvensene til orienteringsgruppa eller jaktlaget?",["Nei, lisensen gjelder bare amatørfrekvensene","Ja, hvis du har radioamatørlisens","Ja, med maks 5 W","Ja, i nødstilfeller og ellers også"],"Radioamatørlisensen gir bare rett til å sende på frekvensene i forskriften. Andre frekvenser krever egen tillatelse.",0,1);
+Q("reg","En radioamatør med kallesignalet LB1XX skal sende fra Svalbard. Hvilket kallesignal bruker han?",["JW/LB1XX","LB1XX/JW","LB1XX/P","JX/LB1XX"],"Forskriften gir JW/LB1XX som eksempel. JX er Jan Mayen.",0,1);
+Q("reg","Hvem kan sende fra en radioamatørstasjon?",["Den som har radioamatørlisens – og andre bare under fysisk tilstedeværelse og veiledning av en lisensiert","Alle som eier en radio","Bare medlemmer av NRRL","Alle over 18 år"],"Veilederen er ansvarlig og bruker sitt eget kallesignal eller klubbens.",0,1);
+Q("kod","Du blir forstyrret av en annen stasjon på samme frekvens. Hvilken Q-kode bruker du?",["QRM","QRN","QSB","QRL"],"QRM = forstyrrelser fra andre stasjoner. QRN er atmosfærisk støy.",0,1);
+Q("reg","Du hører OZ1LA rope «CQ DX». Hva betyr det?",["Den danske stasjonen ønsker kontakt med stasjoner langt unna","Han kaller bare danske stasjoner","Han har en nødsituasjon","Han tester utstyret og vil ikke ha svar"],"OZ er Danmark. Siden Norge ikke er DX for ham, bør du normalt ikke svare.",0,1);
 
 
 const WEIGHT = [10, 6, 3, 1.2, 0.5];  // hvor ofte et spørsmål trekkes, etter nivå 0–4
 const MASTER = 3;                    // tre riktige på rad = mestret
 const STORE = "lisensquiz-v1";
 
-const store = { tab:"quiz", set:"all", chosen: CHAPTERS.map((c) => c.k), boxes:{}, seen:{}, answered:0, correct:0, streak:0, best:0, examLen:30 };
+const store = { tab:"quiz", set:"prio", chosen: CHAPTERS.map((c) => c.k), boxes:{}, seen:{}, answered:0, correct:0, streak:0, best:0, examLen:28 };
 let recent = [], soon = [], Q1 = null, EX = null, armed = false, armTimer = 0;
 
 function load(){
@@ -673,9 +703,9 @@ function load(){
     const s = JSON.parse(localStorage.getItem(STORE) || "null");
     if(!s || typeof s !== "object") return;
     if(["quiz","exam","chapters"].includes(s.tab)) store.tab = s.tab;
-    if(["all","chosen","weak"].includes(s.set)) store.set = s.set;
+    if(["all","prio","chosen","weak"].includes(s.set)) store.set = s.set;
     if(Array.isArray(s.chosen)) store.chosen = s.chosen.filter((k) => CH[k]);
-    if([20,30,50].includes(s.examLen)) store.examLen = s.examLen;
+    if([20,28,50].includes(s.examLen)) store.examLen = s.examLen;
     for(const key of ["boxes","seen"]){
       if(s[key] && typeof s[key] === "object"){
         for(const id of Object.keys(s[key])){
@@ -707,6 +737,7 @@ function pool(){
     return QS.filter((x) => set.has(x.k));
   }
   if(store.set === "weak") return QS.filter((x) => store.seen[x.id] && boxOf(x.id) < MASTER);
+  if(store.set === "prio") return QS.filter((x) => x.p);
   return QS;
 }
 
@@ -761,7 +792,7 @@ function optRows(opts, state){
 }
 
 function questionHead(item){
-  return `<p class="ask">${esc(chapLabel(item.k))}${item.r ? '<span class="calc">Regning</span>' : ""}</p><p class="prompt">${esc(item.q)}</p>`;
+  return `<p class="ask">${esc(chapLabel(item.k))}${item.p ? '<span class="calc prio"><span class="dot sm" aria-hidden="true"></span> Prøvenær</span>' : ""}${item.r ? '<span class="calc">Regning</span>' : ""}</p><p class="prompt">${esc(item.q)}</p>`;
 }
 
 function renderQuiz(){
@@ -786,24 +817,27 @@ function renderQuiz(){
 
 function examStart(){
   const n = store.examLen;
+  const real = n === 28;                          // «Som prøven»: 28 prøvenære spørsmål, maks 6 feil
+  const src = real ? QS.filter((x) => x.p) : QS;
   // Trekk jevnt fra alle kapitler, i forhold til hvor mange spørsmål kapitlet har
   const byCh = {};
-  for(const q of QS) (byCh[q.k] = byCh[q.k] || []).push(q);
+  for(const q of src) (byCh[q.k] = byCh[q.k] || []).push(q);
   let picks = [];
-  const quotas = CHAPTERS.map((c) => ({k:c.k, exact: n * (byCh[c.k] || []).length / QS.length}));
+  const quotas = CHAPTERS.map((c) => ({k:c.k, exact: n * (byCh[c.k] || []).length / src.length}));
   quotas.forEach((x) => { x.n = Math.floor(x.exact); x.rest = x.exact - x.n; });
   let left = n - quotas.reduce((a, x) => a + x.n, 0);
   quotas.slice().sort((a, b) => b.rest - a.rest).forEach((x) => { if(left > 0){ x.n++; left--; } });
   for(const x of quotas) picks = picks.concat(shuffle((byCh[x.k] || []).slice()).slice(0, x.n));
   picks = shuffle(picks);
-  EX = { items: picks.map((item) => ({item, opts: makeOpts(item), picked:-1})), i:0, finished:false };
+  EX = { real, items: picks.map((item) => ({item, opts: makeOpts(item), picked:-1})), i:0, finished:false };
 }
 
 function renderExam(){
   if(!EX){
     return `<div class="exam-intro">
-        <p><b>Prøvetest:</b> Spørsmål fra alle kapitlene, trukket i forhold til hvor mye hvert kapittel fyller. Du får ikke vite svaret underveis – fasit og forklaringer kommer til slutt.</p>
-        <p>Velg antall spørsmål over, og trykk «Start prøvetest».</p>
+        <p><b>Som prøven:</b> 28 prøvenære spørsmål fra alle kapitlene. Du består med maks 6 feil – samme krav som i Nkoms eksempelprøve.</p>
+        <p><b>20 eller 50 spørsmål:</b> Trekkes fra hele spørsmålsbanken.</p>
+        <p>Du får ikke vite svaret underveis – fasit og forklaringer kommer til slutt.</p>
       </div>`;
   }
   if(EX.finished) return renderResult();
@@ -840,6 +874,7 @@ function renderResult(){
   return `<section>
     <p class="ask">Resultat</p>
     <div class="score"><span class="big">${pct} %</span><span class="of">${right} av ${total} riktige</span></div>
+    ${EX.real ? `<p class="verdict${total - right > 6 ? " bad" : ""}">${total - right <= 6 ? `✓ Bestått – ${total - right} feil (maks 6).` : `✗ Ikke bestått – ${total - right} feil (maks 6).`}</p>` : ""}
     <p class="verdict${pct < 60 ? " bad" : ""}">${pct >= 90 ? "Glimrende! Du er godt forberedt." : pct >= 75 ? "Bra! Se gjennom det du bommet på." : pct >= 60 ? "På god vei – øv mer på kapitlene under." : "Fortsett å øve – bruk «Øv» på kapitlene der du bommet mest."}</p>
     <div class="breakdown">${rows}</div>
     ${misses.length ? `<h2 class="sec">Det du bommet på (${misses.length})</h2><div>${missHtml}</div>` : `<h2 class="sec">Alt riktig!</h2>`}
@@ -850,7 +885,7 @@ function chapStats(k){
   const items = QS.filter((x) => x.k === k);
   const lv = [0, 0, 0, 0];
   for(const x of items) lv[Math.min(3, boxOf(x.id))]++;
-  return {n: items.length, lv, mastered: items.filter((x) => boxOf(x.id) >= MASTER).length};
+  return {n: items.length, np: items.filter((x) => x.p).length, lv, mastered: items.filter((x) => boxOf(x.id) >= MASTER).length};
 }
 
 function progHtml(lv, n, cls){
@@ -867,11 +902,13 @@ function renderChapters(){
       <span><span class="box" aria-hidden="true">${on ? "✓" : ""}</span></span>
       <div>
         <div class="chap-h"><span class="chap-n">Kap. ${esc(c.n)} ${esc(c.t)}</span><span class="chap-c">${s.mastered}/${s.n}</span></div>
+        <p class="chap-s">${s.np} prøvenære</p>
         ${progHtml(s.lv, s.n, "sm")}
       </div>
     </li>`;
   }).join("");
   return `<div class="intro">
+      <p><span class="dot sm" aria-hidden="true"></span> <b>Prøvenære</b> spørsmål er de som likner mest på det som spørres om på lisensprøven, basert på Nkoms eksempelprøve og læringsmålene i kurset. Ingen kan vite nøyaktig hva som kommer, så øv gjerne på alt.</p>
       <p>Huk av kapitlene du vil øve på, og velg «Valgte kapitler» under «Øv». Tallet til høyre viser hvor mange spørsmål du har mestret (tre riktige på rad).</p>
     </div>
     <div class="chap-tools">
@@ -882,7 +919,7 @@ function renderChapters(){
     <div class="book"><div class="bar"><span>Kapittel i læreboka</span></div><ul class="rowlist">${rows}</ul></div>
     <div class="foot">
       <button type="button" class="ghost" id="reset">Nullstill fremgang</button>
-      <p class="src">Spørsmålene er laget fra læringsmålene og læreboka «Veien til internasjonal radioamatørlisens» (NRRL), med regler fra forskrift om radioamatørvirksomhet (Nkom, 23.03.2026). Dette er ikke de offisielle eksamensspørsmålene. Kapittel 1, 14 og 15 har ikke eget pensum her.</p>
+      <p class="src">Spørsmålene er laget fra læringsmålene og læreboka «Veien til internasjonal radioamatørlisens» (NRRL), med regler fra forskrift om radioamatørvirksomhet (Nkom, 23.03.2026). Prøvenær-utvalget bygger på temaene i Nkoms eksempelprøve. Dette er ikke de offisielle eksamensspørsmålene. Kapittel 1, 14 og 15 har ikke eget pensum her.</p>
     </div>`;
 }
 
@@ -890,16 +927,18 @@ function renderControls(){
   const c = $("#controls");
   if(store.tab === "quiz"){
     const nAll = QS.length;
+    const nPrio = QS.filter((x) => x.p).length;
     const nCh = QS.filter((x) => store.chosen.includes(x.k)).length;
     const nWeak = QS.filter((x) => store.seen[x.id] && boxOf(x.id) < MASTER).length;
     c.innerHTML = `<div class="toggle" role="group" aria-label="Hvilke spørsmål">
+      <button type="button" data-set="prio"><span class="lbl"><span class="dot sm" aria-hidden="true"></span>Prøvenære <span class="n">${nPrio}</span></span></button>
       <button type="button" data-set="all"><span class="lbl">Alle <span class="n">${nAll}</span></span></button>
-      <button type="button" data-set="chosen"><span class="lbl">Valgte kapitler <span class="n">${nCh}</span></span></button>
-      <button type="button" data-set="weak"><span class="lbl"><span class="dot sm" aria-hidden="true"></span>Øv på svake <span class="n">${nWeak}</span></span></button>
+      <button type="button" data-set="chosen"><span class="lbl">Valgte kap. <span class="n">${nCh}</span></span></button>
+      <button type="button" data-set="weak"><span class="lbl">Svake <span class="n">${nWeak}</span></span></button>
     </div>`;
   } else if(store.tab === "exam"){
     c.innerHTML = (EX && !EX.finished) ? "" : `<div class="toggle" role="group" aria-label="Antall spørsmål">
-      ${[20,30,50].map((n) => `<button type="button" data-len="${n}"><span class="lbl">${n} spørsmål</span></button>`).join("")}
+      ${[20,28,50].map((n) => `<button type="button" data-len="${n}"><span class="lbl">${n === 28 ? '<span class="dot sm" aria-hidden="true"></span>Som prøven <span class="n">28</span>' : `${n} spørsmål`}</span></button>`).join("")}
     </div>`;
   } else c.innerHTML = "";
   c.hidden = !c.innerHTML;
